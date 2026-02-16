@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trouble Shooting | HWPX Pipeline Docs</title>
+  <meta name="description" content="설치, 사용, 배포 중 오류 해결 가이드" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: TroubleShooting.md</span>
+        <span class="badge">AUDIENCE: 사용자/운영</span>
+      </div>
+      <p class="kicker">설치, 사용, 배포 중 오류 해결 가이드</p>
+      <article class="doc-content">
+        <h1>TroubleShooting.md</h1>
+<h2>1. 문서 목적</h2>
+<p>이 문서는 설치, 사용, 개발, 배포 과정에서 자주 만나는 문제와 해결 절차를 정리합니다.</p>
+<p>권장 사용 순서:</p>
+<ol>
+<li>증상 확인</li>
+<li>원인 후보 확인</li>
+<li>빠른 해결 절차 실행</li>
+<li>재발 방지 설정 적용</li>
+</ol>
+<h2>2. 빠른 인덱스</h2>
+<ul>
+<li>설치/활성화 문제: 3장</li>
+<li>임포트/익스포트 문제: 4장</li>
+<li>AI 연동 문제: 5장</li>
+<li>템플릿/경로 문제: 6장</li>
+<li>개발/빌드 문제: 7장</li>
+<li>Git/GitHub 배포 문제: 8장</li>
+</ul>
+<h2>3. 설치/활성화 문제</h2>
+<h3>3.1 플러그인이 목록에 안 보임</h3>
+<p>증상:</p>
+<ul>
+<li>Obsidian <code>Community plugins</code> 목록에서 <code>HWPX Pipeline</code>이 보이지 않음</li>
+</ul>
+<p>원인:</p>
+<ul>
+<li>플러그인 파일 경로 오류</li>
+<li><code>manifest.json</code> 누락</li>
+<li>Obsidian 재시작 미실행</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>경로 확인: <code>&lt;VAULT&gt;/.obsidian/plugins/hwpx-pipeline/</code></li>
+<li>파일 확인: <code>main.js</code>, <code>manifest.json</code></li>
+<li>Obsidian 재시작</li>
+</ol>
+<h3>3.2 설치 후 커맨드가 없음</h3>
+<p>원인:</p>
+<ul>
+<li>플러그인이 비활성화됨</li>
+<li>빌드 실패한 <code>main.js</code> 사용</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>Community plugins에서 활성화 확인</li>
+<li>최신 릴리스 자산 재복사</li>
+<li><code>npm run build</code> 후 <code>main.js</code> 교체</li>
+</ol>
+<h2>4. 임포트/익스포트 문제</h2>
+<h3>4.1 <code>임포트 실패</code>가 뜸</h3>
+<p>원인:</p>
+<ul>
+<li>HWPX 파일 손상</li>
+<li>경로/파일명 정제 과정에서 충돌</li>
+<li>출력 경로에 동일 이름 폴더 존재</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>다른 HWPX 파일로 재현 확인</li>
+<li>출력 폴더를 빈 값(Vault 루트)으로 테스트</li>
+<li>동일 경로에 폴더가 있는지 확인 후 이름 변경</li>
+</ol>
+<h3>4.2 익스포트는 됐는데 다운로드가 안 됨</h3>
+<p>원인:</p>
+<ul>
+<li>브라우저 다운로드 차단</li>
+<li>전달 방식이 <code>Vault 저장만</code></li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>설정의 <code>익스포트 결과 전달</code> 확인</li>
+<li>브라우저/OS 다운로드 권한 허용</li>
+<li>Vault 내 <code>.hwpx</code> 파일 생성 여부 확인</li>
+</ol>
+<h3>4.3 표/서식 일부가 기대와 다름</h3>
+<p>원인:</p>
+<ul>
+<li>HWPX 원본 구조와 Markdown 표현 차이</li>
+<li>인라인 서식 변환 한계</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>템플릿 기반으로 재익스포트 시도</li>
+<li>핵심 표/제목은 수동 보정 후 저장</li>
+<li>필요한 패턴을 이슈로 수집해 변환 규칙 확장</li>
+</ol>
+<h2>5. AI 연동 문제</h2>
+<h3>5.1 <code>API 키가 없습니다</code></h3>
+<p>원인:</p>
+<ul>
+<li><code>API 키 저장</code>이 OFF이고 세션이 종료됨</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>설정에서 API 키 재입력</li>
+<li>필요 시 <code>API 키 저장</code> ON</li>
+</ol>
+<h3>5.2 AI 응답 오류(401/403/429)</h3>
+<p>원인:</p>
+<ul>
+<li>키 오입력(401)</li>
+<li>권한/요금제 제한(403)</li>
+<li>요청량 초과(429)</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>API 키 재발급/재입력</li>
+<li>모델 접근 권한 확인</li>
+<li>요청 간격 조절 및 컨텍스트 길이 축소</li>
+</ol>
+<h3>5.3 응답이 느리거나 비어 있음</h3>
+<p>원인:</p>
+<ul>
+<li>컨텍스트 과다 전송</li>
+<li>네트워크 지연</li>
+<li>모델 응답 포맷 불안정</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>컨텍스트를 <code>선택 텍스트</code>로 변경</li>
+<li><code>최대 컨텍스트 길이</code>를 4000~8000으로 축소</li>
+<li>다시 시도</li>
+</ol>
+<h2>6. 템플릿/경로 문제</h2>
+<h3>6.1 <code>허용되지 않는 폴더 경로</code> 오류</h3>
+<p>원인:</p>
+<ul>
+<li>절대경로, <code>..</code>, 잘못된 경로 문자 사용</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>Vault 상대경로만 사용 (<code>_hwpx_templates</code>, <code>exports</code> 등)</li>
+<li><code>..</code>, <code>C:\</code>, <code>/</code> 시작 경로 제거</li>
+</ol>
+<h3>6.2 잘못된 템플릿으로 익스포트됨</h3>
+<p>원인:</p>
+<ul>
+<li>frontmatter <code>source_file</code>가 오래된 값</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li><code>HWPX 템플릿 관리</code> 실행</li>
+<li>해당 템플릿으로 <code>현재 노트 연결</code></li>
+<li>다시 익스포트</li>
+</ol>
+<h3>6.3 템플릿 삭제가 안 됨</h3>
+<p>원인:</p>
+<ul>
+<li>파일 잠금 또는 권한 문제</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>Obsidian에서 파일 열림 상태 해제</li>
+<li>OS 파일 권한 확인</li>
+<li>재시도</li>
+</ol>
+<h2>7. 개발/빌드 문제</h2>
+<h3>7.1 <code>npx tsc --noEmit</code> 타입 오류</h3>
+<p>해결 순서:</p>
+<ol>
+<li>최근 변경 파일 확인</li>
+<li>타입 선언(<code>interface</code>, <code>union</code>) 일치 여부 점검</li>
+<li><code>npm install</code> 재실행 후 재검증</li>
+</ol>
+<h3>7.2 <code>npm test</code> 실패</h3>
+<p>원인:</p>
+<ul>
+<li>샘플 파일 누락</li>
+<li>테스트 번들/환경 문제</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li><code>node create-sample-hwpx.mjs</code></li>
+<li><code>npm test</code> 재실행</li>
+<li>실패 케이스 로그에서 테스트 섹션 확인</li>
+</ol>
+<h3>7.3 빌드는 되는데 동작이 이상함</h3>
+<p>원인:</p>
+<ul>
+<li>배포 파일(<code>main.js</code>) 미반영</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li><code>npm run build</code></li>
+<li>Vault 플러그인 폴더의 <code>main.js</code> 교체</li>
+<li>Obsidian 재시작</li>
+</ol>
+<h2>8. Git/GitHub 배포 문제</h2>
+<h3>8.1 <code>Could not resolve host: github.com</code></h3>
+<p>원인:</p>
+<ul>
+<li>네트워크/DNS 문제</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>네트워크 연결 확인</li>
+<li>VPN/프록시 확인</li>
+<li>잠시 후 재시도</li>
+</ol>
+<h3>8.2 <code>Repository not found</code></h3>
+<p>원인:</p>
+<ul>
+<li>원격 URL 오타</li>
+<li>저장소 미생성</li>
+<li>계정 권한 없음</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li><code>git remote -v</code> 확인</li>
+<li><code>gh repo view &lt;owner&gt;/&lt;repo&gt;</code> 확인</li>
+<li>필요 시 저장소 생성: <code>gh repo create &lt;owner&gt;/&lt;repo&gt; --public</code></li>
+</ol>
+<h3>8.3 <code>gh auth status</code>에서 token invalid</h3>
+<p>해결:</p>
+<ol>
+<li><code>gh auth login -h github.com</code></li>
+<li>브라우저에서 device code 인증</li>
+<li>완료 후 <code>gh auth status</code> 재확인</li>
+</ol>
+<h2>9. 운영 노하우</h2>
+<h3>9.1 충돌 최소화</h3>
+<ul>
+<li>팀 환경 기본값을 <code>새 버전 저장</code>으로 통일</li>
+<li>출력 폴더를 날짜/팀 단위로 분리</li>
+</ul>
+<h3>9.2 AI 비용/보안 관리</h3>
+<ul>
+<li>기본 컨텍스트를 <code>선택 텍스트</code>로 고정</li>
+<li>최대 길이 제한을 보수적으로 설정</li>
+<li>민감 문서에는 AI 기능 사용 전 비식별화</li>
+</ul>
+<h3>9.3 시연/교육 중 안정성</h3>
+<ul>
+<li>네트워크 실패 대비 오프라인 시나리오 준비</li>
+<li>샘플 파일을 항상 로컬에 복사해둠</li>
+<li>설치/설정 스크린샷 사전 확보</li>
+</ul>
+<h2>10. 그래도 해결되지 않을 때</h2>
+<ol>
+<li>재현 절차를 문장으로 정리</li>
+<li>사용 버전 기록</li>
+</ol>
+<ul>
+<li>Obsidian 버전</li>
+<li>플러그인 버전</li>
+<li>OS 버전</li>
+</ul>
+<ol start="3">
+<li>최근 변경/설정값 첨부</li>
+<li>저장소 이슈에 등록</li>
+</ol>
+<h2>11. 관련 문서</h2>
+<ul>
+<li>설치: <code>Install.md</code></li>
+<li>사용자 매뉴얼: <code>UserGuide.md</code></li>
+<li>시연 가이드: <code>Showcase.md</code></li>
+<li>개발자 매뉴얼: <code>Developer.md</code></li>
+</ul>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from TroubleShooting.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

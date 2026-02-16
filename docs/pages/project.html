@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project | HWPX Pipeline Docs</title>
+  <meta name="description" content="유사 프로젝트 설계 및 추진 프레임워크" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: Project.md</span>
+        <span class="badge">AUDIENCE: 개발/기획</span>
+      </div>
+      <p class="kicker">유사 프로젝트 설계 및 추진 프레임워크</p>
+      <article class="doc-content">
+        <h1>Project.md</h1>
+<h2>1. 문서 목적</h2>
+<p>이 문서는 <code>HWPX Pipeline</code>과 유사한 문서 자동화 플러그인을 기획/개발하려는 팀을 위한 프로젝트 가이드입니다.</p>
+<ul>
+<li>대상: PM, 테크리드, 아키텍트, 개발팀</li>
+<li>범위: 요구사항 정의부터 릴리스/운영까지</li>
+</ul>
+<h2>2. 프로젝트 목표 템플릿</h2>
+<h2>2.1 비즈니스 목표</h2>
+<ul>
+<li>문서 작성/변환 시간 단축</li>
+<li>기존 문서 포맷(HWPX 등) 호환성 확보</li>
+<li>생성형 AI 도입 시 통제 가능한 보안 정책 적용</li>
+</ul>
+<h2>2.2 사용자 목표</h2>
+<ul>
+<li>기존 문서 자산을 버리지 않고 전환</li>
+<li>충돌/버전/템플릿 관리 자동화</li>
+<li>설치/업데이트/문제 해결 문서의 일관성</li>
+</ul>
+<h2>2.3 기술 목표</h2>
+<ul>
+<li>로컬 우선(Local-first) 동작</li>
+<li>플러그인 독립 배포 가능</li>
+<li>테스트 자동화와 릴리스 재현성 확보</li>
+</ul>
+<h2>3. 요구사항 프레임워크</h2>
+<h2>3.1 기능 요구사항 (Must)</h2>
+<ol>
+<li>포맷 양방향 변환 (예: HWPX ↔ Markdown)</li>
+<li>템플릿 기반 출력</li>
+<li>파일 충돌 정책 (ask/version/skip/overwrite)</li>
+<li>보안 설정 가능한 AI 보조 작성</li>
+<li>설치/운영 문서 제공</li>
+</ol>
+<h2>3.2 비기능 요구사항 (Must)</h2>
+<ol>
+<li>대용량 문서 처리 내구성</li>
+<li>경로 조작 방지</li>
+<li>민감 데이터 최소 전송</li>
+<li>오류 메시지의 운영 친화성</li>
+</ol>
+<h2>3.3 Nice-to-have</h2>
+<ol>
+<li>배치 처리</li>
+<li>미리보기/검증 모달</li>
+<li>템플릿 관리 UI</li>
+<li>릴리스 자동화</li>
+</ol>
+<h2>4. 권장 아키텍처</h2>
+<h2>4.1 모듈 분리</h2>
+<ul>
+<li><code>importer</code>: 외부 문서 -&gt; 내부 편집 포맷</li>
+<li><code>exporter</code>: 내부 편집 포맷 -&gt; 외부 문서</li>
+<li><code>ai-connector</code>: 외부 AI API 통신</li>
+<li><code>safety</code>: 경로/입력/전송 안전성 검증</li>
+<li><code>main</code>: 커맨드/모달/설정/오케스트레이션</li>
+</ul>
+<h2>4.2 데이터 흐름</h2>
+<ol>
+<li>파일 선택</li>
+<li>경로/파일명 정제</li>
+<li>변환</li>
+<li>미리보기 확인</li>
+<li>저장 및 템플릿 연동</li>
+</ol>
+<h2>4.3 설정 정책 설계</h2>
+<ul>
+<li>사용자 친화 기본값 + 보안 기본값 동시 적용</li>
+<li>예: API 키 비저장, 컨텍스트 길이 제한, 충돌 시 확인</li>
+</ul>
+<h2>5. 개발 단계 계획 (권장)</h2>
+<h2>5.1 Phase 1: 코어 변환</h2>
+<ul>
+<li>임포트/익스포트 최소 기능 완성</li>
+<li>샘플 데이터 기반 round-trip 검증</li>
+</ul>
+<h2>5.2 Phase 2: 운영 안전성</h2>
+<ul>
+<li>경로 검증</li>
+<li>충돌 정책</li>
+<li>예외 처리 정리</li>
+</ul>
+<h2>5.3 Phase 3: 사용자 경험</h2>
+<ul>
+<li>미리보기 모달</li>
+<li>배치 처리</li>
+<li>템플릿 관리</li>
+</ul>
+<h2>5.4 Phase 4: 보안/AI</h2>
+<ul>
+<li>전송 범위 제어</li>
+<li>키 저장 정책</li>
+<li>에러 메시지 민감 정보 제한</li>
+</ul>
+<h2>5.5 Phase 5: 문서/배포</h2>
+<ul>
+<li>사용자/개발자/설치/트러블슈팅 문서</li>
+<li>GitHub Release와 자산 배포</li>
+</ul>
+<h2>6. 테스트 전략</h2>
+<h2>6.1 최소 테스트 세트</h2>
+<ol>
+<li>빌드 테스트: <code>npm run build</code></li>
+<li>타입 테스트: <code>npx tsc --noEmit</code></li>
+<li>통합 테스트: <code>npm test</code></li>
+</ol>
+<h2>6.2 통합 테스트 권장 항목</h2>
+<ul>
+<li>Round-trip 핵심 문구 보존 여부</li>
+<li>첫 문단/표 누락 여부</li>
+<li>CRLF frontmatter 파싱</li>
+<li>길이 제한 트렁케이션</li>
+<li>대용량 본문 익스포트 내구성</li>
+</ul>
+<h2>7. 보안 체크리스트</h2>
+<ul>
+<li>경로가 Vault 상대경로인지 확인</li>
+<li>파일명 정제 적용 여부</li>
+<li>API 키 평문 노출 방지 여부</li>
+<li>외부 API 전송 데이터 최소화 여부</li>
+<li>오류 메시지에 민감 본문 포함 여부</li>
+</ul>
+<h2>8. 운영 체크리스트</h2>
+<h2>8.1 배포 전</h2>
+<ol>
+<li>문서 최신화</li>
+<li>버전 동기화 (<code>manifest.json</code>, <code>package.json</code>, <code>versions.json</code>)</li>
+<li>릴리스 노트 작성</li>
+</ol>
+<h2>8.2 배포 후</h2>
+<ol>
+<li>설치 검증</li>
+<li>주요 플로우 실사용 테스트</li>
+<li>사용자 FAQ/이슈 수집</li>
+</ol>
+<h2>9. 성과 지표 (KPI)</h2>
+<ul>
+<li>평균 문서 작성 시간 절감률</li>
+<li>포맷 깨짐/실패율</li>
+<li>AI 기능 사용률</li>
+<li>사용자 만족도 (설문)</li>
+<li>장애 대응 평균 시간</li>
+</ul>
+<h2>10. 문서 산출물 템플릿</h2>
+<ul>
+<li>시연: <code>Showcase.md</code></li>
+<li>설치: <code>Install.md</code></li>
+<li>사용자: <code>UserGuide.md</code></li>
+<li>개발자: <code>Developer.md</code></li>
+<li>문제 해결: <code>TroubleShooting.md</code></li>
+</ul>
+<h2>11. 추천 확장 과제</h2>
+<ol>
+<li>HTML/PDF 추가 익스포트</li>
+<li>조직 정책 기반 프롬프트 템플릿</li>
+<li>문서 품질 자동 점검 (표기/형식 검증)</li>
+<li>CI 기반 자동 릴리스</li>
+</ol>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from Project.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

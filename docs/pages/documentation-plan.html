@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Documentation Plan | HWPX Pipeline Docs</title>
+  <meta name="description" content="문서 체계 운영 계획과 점검 항목" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: DocumentationPlan.md</span>
+        <span class="badge">AUDIENCE: 개발/운영</span>
+      </div>
+      <p class="kicker">문서 체계 운영 계획과 점검 항목</p>
+      <article class="doc-content">
+        <h1>DocumentationPlan.md</h1>
+<h2>1. 목적</h2>
+<p>플러그인 도입/시연/개발/운영에 필요한 문서를 체계적으로 관리하기 위한 계획 문서입니다.</p>
+<h2>2. 문서 작성 범위</h2>
+<h3>2.1 필수 문서</h3>
+<ul>
+<li><code>Showcase.md</code>: 강의/데모 시연 시나리오</li>
+<li><code>Project.md</code>: 유사 프로젝트 기획/개발 프레임워크</li>
+<li><code>Developer.md</code>: 개발자 유지보수 매뉴얼</li>
+<li><code>UserGuide.md</code>: 사용자 작업 매뉴얼</li>
+<li><code>TroubleShooting.md</code>: 오류 대응 노하우</li>
+<li><code>Install.md</code>: 설치/업데이트/제거 가이드</li>
+</ul>
+<h3>2.2 보강 문서</h3>
+<ul>
+<li><code>README.md</code>: 문서 허브 및 빠른 진입점</li>
+<li><code>CHANGELOG.md</code>: 릴리스 변경 이력</li>
+</ul>
+<h2>3. 작성 원칙</h2>
+<ol>
+<li>사용자 관점 문서와 개발자 관점 문서를 분리한다.</li>
+<li>모든 문서는 실제 커맨드/설정명 기준으로 작성한다.</li>
+<li>문제 해결 문서는 증상-원인-해결 순서를 유지한다.</li>
+<li>릴리스마다 문서 변경 여부를 점검한다.</li>
+</ol>
+<h2>4. 진행 상태</h2>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 문서 범위 확정</li>
+<li><input checked="" disabled="" type="checkbox"> <code>Showcase.md</code> 작성</li>
+<li><input checked="" disabled="" type="checkbox"> <code>UserGuide.md</code> 작성</li>
+<li><input checked="" disabled="" type="checkbox"> <code>Install.md</code> 작성</li>
+<li><input checked="" disabled="" type="checkbox"> <code>Project.md</code> 작성</li>
+<li><input checked="" disabled="" type="checkbox"> <code>Developer.md</code> 작성</li>
+<li><input checked="" disabled="" type="checkbox"> <code>TroubleShooting.md</code> 작성</li>
+<li><input disabled="" type="checkbox"> 정기 문서 점검 자동화 (추가 과제)</li>
+</ul>
+<h2>5. 정기 점검 체크리스트</h2>
+<h3>릴리스 전</h3>
+<ol>
+<li>신규 기능이 사용자 문서에 반영되었는가</li>
+<li>설정 변경이 개발자 문서에 반영되었는가</li>
+<li>설치/업데이트 절차가 최신인가</li>
+<li>알려진 이슈가 TroubleShooting에 반영되었는가</li>
+</ol>
+<h3>릴리스 후</h3>
+<ol>
+<li>시연 문서가 실제 동작과 일치하는가</li>
+<li>사용자 FAQ가 업데이트되었는가</li>
+<li>개발자 온보딩 절차가 재현 가능한가</li>
+</ol>
+<h2>6. 다음 개선 과제</h2>
+<ol>
+<li>문서 버전 태깅(<code>v1.1</code>, <code>v1.2</code>)</li>
+<li>스크린샷/캡처 이미지 추가</li>
+<li>사내 배포용 PDF 패키징</li>
+</ol>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from DocumentationPlan.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

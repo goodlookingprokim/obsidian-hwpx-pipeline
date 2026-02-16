@@ -6,14 +6,23 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs production",
-    "test": "node test-pipeline.mjs"
+    "test": "node test-pipeline.mjs",
+    "build:docs": "node scripts/build-doc-pages.mjs",
+    "build:site": "npm run build:docs"
   },
-  "keywords": ["obsidian", "hwpx", "hancom", "markdown", "converter"],
+  "keywords": [
+    "obsidian",
+    "hwpx",
+    "hancom",
+    "markdown",
+    "converter"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.0.0",
     "esbuild": "^0.21.0",
+    "marked": "^17.0.2",
     "obsidian": "latest",
     "typescript": "^5.4.0"
   },

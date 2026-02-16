@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Install | HWPX Pipeline Docs</title>
+  <meta name="description" content="GitHub/BRAT/수동 설치와 업데이트" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: Install.md</span>
+        <span class="badge">AUDIENCE: 사용자</span>
+      </div>
+      <p class="kicker">GitHub/BRAT/수동 설치와 업데이트</p>
+      <article class="doc-content">
+        <h1>Install.md</h1>
+<h2>1. 설치 개요</h2>
+<p><code>HWPX Pipeline</code> 설치 방법은 다음 중 선택할 수 있습니다.</p>
+<ol>
+<li>GitHub Release 자산 수동 설치</li>
+<li>BRAT 플러그인을 통한 설치/업데이트</li>
+<li>소스 빌드 후 로컬 설치</li>
+<li>설치 스크립트 사용</li>
+</ol>
+<p>권장 순서:</p>
+<ul>
+<li>일반 사용자: 1 또는 2</li>
+<li>개발자: 3 또는 4</li>
+</ul>
+<h2>2. 사전 조건</h2>
+<ul>
+<li>Obsidian Desktop</li>
+<li>Vault 접근 권한</li>
+<li>(AI 사용 시) OpenAI 또는 Anthropic API 키</li>
+</ul>
+<h2>3. 방법 A: GitHub Release 수동 설치</h2>
+<h2>3.1 릴리스 페이지</h2>
+<ul>
+<li>저장소: <code>https://github.com/goodlookingprokim/obsidian-hwpx-pipeline</code></li>
+<li>Release: <code>v1.1.0</code> 이상</li>
+</ul>
+<h2>3.2 다운로드 파일</h2>
+<p>릴리스에서 아래 파일을 받습니다.</p>
+<ul>
+<li><code>main.js</code></li>
+<li><code>manifest.json</code></li>
+<li><code>versions.json</code> (배포 메타용, 로컬 설치 자체엔 필수 아님)</li>
+</ul>
+<h2>3.3 Vault에 복사</h2>
+<p>플러그인 폴더를 만들고 파일을 복사합니다.</p>
+<pre><code class="language-bash">mkdir -p &quot;&lt;VAULT_PATH&gt;/.obsidian/plugins/hwpx-pipeline&quot;
+cp main.js manifest.json &quot;&lt;VAULT_PATH&gt;/.obsidian/plugins/hwpx-pipeline/&quot;
+</code></pre>
+<h2>3.4 활성화</h2>
+<ol>
+<li>Obsidian 재시작</li>
+<li><code>설정 → Community plugins</code></li>
+<li><code>HWPX Pipeline</code> 활성화</li>
+</ol>
+<h2>4. 방법 B: BRAT으로 설치</h2>
+<h2>4.1 BRAT 설치</h2>
+<ol>
+<li>Obsidian에서 <code>Community plugins</code> 활성화</li>
+<li><code>Obsidian42 - BRAT</code> 설치/활성화</li>
+</ol>
+<h2>4.2 저장소 추가</h2>
+<ol>
+<li>BRAT 설정에서 <code>Add Beta plugin</code></li>
+<li>저장소 URL 입력:<ul>
+<li><code>https://github.com/goodlookingprokim/obsidian-hwpx-pipeline</code></li>
+</ul>
+</li>
+<li>설치 후 플러그인 활성화</li>
+</ol>
+<h2>4.3 장점</h2>
+<ul>
+<li>GitHub 최신 커밋 기반 업데이트 테스트가 쉬움</li>
+<li>베타 배포/사내 파일럿에 적합</li>
+</ul>
+<h2>5. 방법 C: 소스 빌드 후 설치 (개발자용)</h2>
+<h2>5.1 프로젝트 준비</h2>
+<pre><code class="language-bash">git clone https://github.com/goodlookingprokim/obsidian-hwpx-pipeline.git
+cd obsidian-hwpx-pipeline
+npm install
+npm run build
+</code></pre>
+<h2>5.2 파일 복사</h2>
+<pre><code class="language-bash">mkdir -p &quot;&lt;VAULT_PATH&gt;/.obsidian/plugins/hwpx-pipeline&quot;
+cp main.js manifest.json &quot;&lt;VAULT_PATH&gt;/.obsidian/plugins/hwpx-pipeline/&quot;
+</code></pre>
+<h2>6. 방법 D: install.sh 사용</h2>
+<p>루트에서 실행:</p>
+<pre><code class="language-bash">./install.sh &quot;&lt;VAULT_PATH&gt;&quot;
+</code></pre>
+<p>샘플 파일도 복사하려면:</p>
+<pre><code class="language-bash">./install.sh &quot;&lt;VAULT_PATH&gt;&quot; --copy-samples
+</code></pre>
+<h2>7. 설치 확인 체크리스트</h2>
+<ul>
+<li>리본에 HWPX 임포트 아이콘 표시</li>
+<li>커맨드 팔레트에 다음 명령 표시:</li>
+</ul>
+<ol>
+<li><code>HWPX 파일 임포트 (→ Markdown)</code></li>
+<li><code>여러 HWPX 파일 일괄 임포트</code></li>
+<li><code>현재 노트를 HWPX로 내보내기</code></li>
+<li><code>AI 문서 작성 도우미</code></li>
+<li><code>HWPX 템플릿 관리</code></li>
+</ol>
+<h2>8. 업데이트 방법</h2>
+<h3>수동 설치 사용 중</h3>
+<ol>
+<li>최신 릴리스 파일 다운로드</li>
+<li>기존 <code>main.js</code>, <code>manifest.json</code> 덮어쓰기</li>
+<li>Obsidian 재시작</li>
+</ol>
+<h3>BRAT 사용 중</h3>
+<ul>
+<li>BRAT의 <code>Check for updates</code>로 업데이트</li>
+</ul>
+<h2>9. 제거 방법</h2>
+<ol>
+<li>Obsidian에서 플러그인 비활성화</li>
+<li>폴더 삭제:</li>
+</ol>
+<pre><code class="language-bash">rm -rf &quot;&lt;VAULT_PATH&gt;/.obsidian/plugins/hwpx-pipeline&quot;
+</code></pre>
+<h2>10. 설치 실패 시 빠른 점검</h2>
+<ul>
+<li>플러그인 폴더 경로 오타 여부</li>
+<li><code>manifest.json</code> 파일 존재 여부</li>
+<li>Obsidian 재시작 여부</li>
+<li>파일 권한 문제</li>
+<li>상세 오류는 <code>TroubleShooting.md</code> 참고</li>
+</ul>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from Install.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

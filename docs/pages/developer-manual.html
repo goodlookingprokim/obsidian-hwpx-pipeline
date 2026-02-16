@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Developer Manual | HWPX Pipeline Docs</title>
+  <meta name="description" content="개발, 테스트, 릴리스, 유지보수 실무 지침" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: Developer.md</span>
+        <span class="badge">AUDIENCE: 개발자</span>
+      </div>
+      <p class="kicker">개발, 테스트, 릴리스, 유지보수 실무 지침</p>
+      <article class="doc-content">
+        <h1>Developer.md</h1>
+<h2>1. 문서 목적</h2>
+<p>이 문서는 <code>HWPX Pipeline</code> 코드베이스를 유지보수/확장하는 개발자를 위한 실무 매뉴얼입니다.</p>
+<h2>2. 개발 환경</h2>
+<h2>2.1 요구사항</h2>
+<ul>
+<li>Node.js 20+</li>
+<li>npm 10+</li>
+<li>Obsidian Desktop</li>
+</ul>
+<h2>2.2 초기 설정</h2>
+<pre><code class="language-bash">git clone https://github.com/goodlookingprokim/obsidian-hwpx-pipeline.git
+cd obsidian-hwpx-pipeline
+npm install
+</code></pre>
+<h2>2.3 빌드/테스트</h2>
+<pre><code class="language-bash">npm run build
+npm test
+npx tsc --noEmit
+</code></pre>
+<h2>3. 코드 구조</h2>
+<ul>
+<li><code>src/main.ts</code>: 커맨드, 모달, 설정, 파일 I/O 오케스트레이션</li>
+<li><code>src/importer.ts</code>: HWPX -&gt; Markdown 변환</li>
+<li><code>src/exporter.ts</code>: Markdown -&gt; HWPX 변환</li>
+<li><code>src/ai-connector.ts</code>: OpenAI/Anthropic API 통신</li>
+<li><code>src/safety.ts</code>: 경로/입력 검증 및 메타데이터 처리</li>
+<li><code>test-pipeline.mjs</code>: 통합/보안/내구성 테스트</li>
+</ul>
+<h2>4. 핵심 설계 원칙</h2>
+<ol>
+<li>사용자 데이터는 기본적으로 Vault 내 로컬 처리</li>
+<li>외부 전송(AI)은 최소화/선택 가능해야 함</li>
+<li>충돌/예외는 사용자에게 설명 가능한 메시지로 노출</li>
+<li>설정 기본값은 안전 우선</li>
+</ol>
+<h2>5. 기능 추가 절차</h2>
+<h2>5.1 새 커맨드 추가</h2>
+<ol>
+<li><code>src/main.ts</code>의 <code>onload()</code>에 <code>addCommand</code> 등록</li>
+<li>설정 연동이 필요하면 <code>HwpxPipelineSettings</code>와 설정 UI에 필드 추가</li>
+<li>관련 테스트/문서 업데이트</li>
+</ol>
+<h2>5.2 새 변환 규칙 추가</h2>
+<ol>
+<li><code>importer.ts</code> 또는 <code>exporter.ts</code>에서 파서/변환 함수 수정</li>
+<li>round-trip 테스트에 검증 항목 추가</li>
+<li>샘플 파일로 수동 검증</li>
+</ol>
+<h2>5.3 새 AI 제공자 추가</h2>
+<ol>
+<li><code>AIProvider</code> 타입 확장 (<code>src/main.ts</code>)</li>
+<li><code>generateWithAI</code> 분기 확장 (<code>src/ai-connector.ts</code>)</li>
+<li>설정 UI dropdown과 모델 기본값 추가</li>
+<li>오류 메시지 민감도 점검</li>
+</ol>
+<h2>6. 보안 개발 가이드</h2>
+<h2>6.1 경로/파일명</h2>
+<ul>
+<li>저장 전 <code>normalizeVaultPath</code>, <code>isSafeVaultRelativePath</code>, <code>sanitizeFileName</code>, <code>joinVaultPath</code> 사용</li>
+<li>사용자 입력 문자열을 경로에 직접 연결하지 않기</li>
+</ul>
+<h2>6.2 API 키</h2>
+<ul>
+<li>기본 정책: 세션 저장</li>
+<li>설정 UI에서는 마스킹 입력 유지</li>
+<li>로그/Notice에 키가 노출되지 않도록 주의</li>
+</ul>
+<h2>6.3 AI 컨텍스트</h2>
+<ul>
+<li>기본값은 <code>선택 텍스트</code></li>
+<li><code>frontmatter 제외</code> 옵션 유지</li>
+<li>길이 제한값(<code>aiMaxContextChars</code>) 검증 유지</li>
+</ul>
+<h2>7. 테스트 작성 가이드</h2>
+<h2>7.1 기존 테스트 범위</h2>
+<ul>
+<li>Round-trip 품질 확인</li>
+<li>보안 유틸 동작 확인</li>
+<li>대용량 익스포트 내구성 확인</li>
+</ul>
+<h2>7.2 신규 테스트 추가 규칙</h2>
+<ol>
+<li>재현 가능한 입력/출력 사용</li>
+<li>오류 케이스도 assert 포함</li>
+<li>한 테스트는 한 책임 유지</li>
+</ol>
+<h2>7.3 자주 쓰는 검증 예시</h2>
+<ul>
+<li><code>assert.ok(doc.tables.length &gt;= 1)</code></li>
+<li><code>assert.equal(isSafeVaultRelativePath(&#39;../x&#39;), false)</code></li>
+<li><code>assert.equal(prepared.text.length, maxChars)</code></li>
+</ul>
+<h2>8. 릴리스 절차</h2>
+<h2>8.1 버전 업데이트</h2>
+<ol>
+<li><code>manifest.json</code></li>
+<li><code>package.json</code></li>
+<li><code>package-lock.json</code></li>
+<li><code>versions.json</code></li>
+</ol>
+<h2>8.2 릴리스 노트</h2>
+<ul>
+<li><code>CHANGELOG.md</code>에 버전 섹션 작성</li>
+<li>핵심 변경/보안 변경/마이그레이션 포인트 분리</li>
+</ul>
+<h2>8.3 GitHub Release</h2>
+<pre><code class="language-bash">gh release create vX.Y.Z main.js manifest.json versions.json \
+  --repo goodlookingprokim/obsidian-hwpx-pipeline \
+  --title &quot;vX.Y.Z&quot; --notes-file RELEASE_NOTES.md
+</code></pre>
+<h2>9. Git 워크플로우</h2>
+<h2>9.1 브랜치</h2>
+<ul>
+<li><code>main</code>: 배포 가능한 상태</li>
+<li>기능 작업: <code>feature/&lt;topic&gt;</code></li>
+<li>핫픽스: <code>hotfix/&lt;topic&gt;</code></li>
+</ul>
+<h2>9.2 커밋 메시지 권장</h2>
+<ul>
+<li><code>feat: ...</code></li>
+<li><code>fix: ...</code></li>
+<li><code>docs: ...</code></li>
+<li><code>release: vX.Y.Z ...</code></li>
+</ul>
+<h2>10. 코드 리뷰 체크리스트</h2>
+<ol>
+<li>데이터 손실 가능성(덮어쓰기/삭제) 점검</li>
+<li>경로 조작/입력 검증 누락 점검</li>
+<li>민감정보 노출 가능성 점검</li>
+<li>테스트 누락 여부 점검</li>
+<li>문서 반영 여부 점검</li>
+</ol>
+<h2>11. 유지보수 팁</h2>
+<ul>
+<li>UI 변경 시 <code>Showcase.md</code>, <code>UserGuide.md</code>도 동시에 갱신</li>
+<li>실패 로그를 수집할 때는 문서 본문/키를 절대 남기지 않기</li>
+<li>외부 라이브러리 업데이트 시 샘플 round-trip 재검증 필수</li>
+</ul>
+<h2>12. 관련 문서</h2>
+<ul>
+<li><code>Project.md</code></li>
+<li><code>UserGuide.md</code></li>
+<li><code>Install.md</code></li>
+<li><code>TroubleShooting.md</code></li>
+</ul>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from Developer.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

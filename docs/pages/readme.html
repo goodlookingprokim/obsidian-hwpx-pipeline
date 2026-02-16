@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>README | HWPX Pipeline Docs</title>
+  <meta name="description" content="프로젝트 개요와 전체 문서 허브" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: README.md</span>
+        <span class="badge">AUDIENCE: 공통</span>
+      </div>
+      <p class="kicker">프로젝트 개요와 전체 문서 허브</p>
+      <article class="doc-content">
+        <h1>HWPX Pipeline - 옵시디언 플러그인</h1>
+<p>HWPX ↔ Markdown 양방향 변환과 AI 문서 작성을 지원하는 Obsidian 플러그인입니다.</p>
+<h2>설치</h2>
+<h3>수동 설치</h3>
+<pre><code class="language-bash">mkdir -p &quot;VAULT_PATH/.obsidian/plugins/hwpx-pipeline&quot;
+cp main.js manifest.json &quot;VAULT_PATH/.obsidian/plugins/hwpx-pipeline/&quot;
+</code></pre>
+<h3>설치 스크립트</h3>
+<pre><code class="language-bash">./install.sh &quot;/path/to/your/vault&quot;
+# 샘플 파일도 데스크톱에 복사하려면
+./install.sh &quot;/path/to/your/vault&quot; --copy-samples
+</code></pre>
+<h2>빌드</h2>
+<pre><code class="language-bash">npm install
+npm run build
+</code></pre>
+<h2>핵심 기능</h2>
+<ul>
+<li><code>HWPX 임포트</code>: 표/기본 서식을 유지하며 Markdown 변환</li>
+<li><code>HWPX 일괄 임포트</code>: 여러 HWPX를 한 번에 변환</li>
+<li><code>HWPX 익스포트</code>: 템플릿 기반으로 Markdown을 HWPX로 변환</li>
+<li><code>AI 문서 작성 도우미</code>: OpenAI/Anthropic API 연동</li>
+<li><code>파이프라인 가이드</code>: 임포트 → AI 작성 → 익스포트 단계를 모달에서 바로 실행</li>
+<li><code>템플릿 관리</code>: 템플릿 목록 조회, 현재 노트 연결, 교체, 삭제</li>
+<li><code>변환 미리보기</code>: 임포트/익스포트 전 결과 요약 확인</li>
+</ul>
+<h2>안전/운영 기본값</h2>
+<ul>
+<li>파일 충돌 정책 기본값은 <code>매번 물어보기</code></li>
+<li>AI API 키 저장 기본값은 <code>세션 전용(비저장)</code></li>
+<li>AI 컨텍스트 전송 길이 기본값은 <code>12000자</code></li>
+<li>문서 컨텍스트 전송 시 frontmatter 제거 기본값 <code>ON</code></li>
+<li>임포트/익스포트 미리보기 기본값 <code>ON</code></li>
+</ul>
+<h2>권장 설정</h2>
+<ol>
+<li><code>파일 충돌 처리</code>: 운영 환경에서는 <code>매번 물어보기</code> 또는 <code>새 버전 저장</code> 권장</li>
+<li><code>AI API 키 저장</code>: 공용 장비에서는 반드시 <code>OFF</code></li>
+<li><code>최대 컨텍스트 길이</code>: 비용/민감도에 맞춰 축소</li>
+<li><code>템플릿 관리</code>: 노트별 <code>source_file</code> 연결 상태를 정기 점검</li>
+</ol>
+<h2>테스트</h2>
+<pre><code class="language-bash"># 샘플 HWPX 생성
+node create-sample-hwpx.mjs
+
+# E2E + 라운드트립 assert + 보안/내구성 케이스
+node test-pipeline.mjs
+</code></pre>
+<h2>문서 허브</h2>
+<ul>
+<li>시연 가이드: <code>Showcase.md</code></li>
+<li>프로젝트 가이드: <code>Project.md</code></li>
+<li>개발자 매뉴얼: <code>Developer.md</code></li>
+<li>사용자 매뉴얼: <code>UserGuide.md</code></li>
+<li>문제 해결: <code>TroubleShooting.md</code></li>
+<li>설치 가이드: <code>Install.md</code></li>
+<li>문서 작성 계획: <code>DocumentationPlan.md</code></li>
+</ul>
+<h2>참고 및 감사</h2>
+<ul>
+<li>HWPX 처리 로직 구성 시 <a href="https://github.com/ubermensch1218/hwpx-ts"><code>ubermensch1218/hwpx-ts</code></a>를 참고했습니다.</li>
+<li><code>hwpx-ts</code>와 <code>@ubermensch1218/hwpxcore</code>를 공개해주신 개발자 <code>@ubermensch1218</code>님께 감사드립니다.</li>
+</ul>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from README.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>

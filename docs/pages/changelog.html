@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Changelog | HWPX Pipeline Docs</title>
+  <meta name="description" content="버전별 변경 사항과 보안 업데이트" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script defer src="../assets/app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="logo" href="../index.html">
+        <span class="logo-chip">HWPX</span>
+        <span class="logo-text">PIPELINE DOCS</span>
+      </a>
+      <nav class="nav" aria-label="상단 탐색">
+        <a data-nav href="../index.html">HOME</a>
+        <a data-nav href="../user.html">USER</a>
+        <a data-nav href="../developer.html">DEVELOPER</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button">DARK MODE</button>
+    </header>
+
+    <section class="doc-wrap">
+      <div class="doc-meta">
+        <span class="badge">SOURCE: CHANGELOG.md</span>
+        <span class="badge">AUDIENCE: 공통</span>
+      </div>
+      <p class="kicker">버전별 변경 사항과 보안 업데이트</p>
+      <article class="doc-content">
+        <h1>Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<h2>[1.1.0] - 2026-02-16</h2>
+<h3>Added</h3>
+<ul>
+<li>File conflict policy options: <code>ask</code>, <code>version</code>, <code>skip</code>, <code>overwrite</code>.</li>
+<li>Import/export preview modals with summary and confirmation.</li>
+<li>Batch import command for multiple HWPX files.</li>
+<li>Template management modal for listing, adding, replacing, linking, and deleting templates.</li>
+<li>Pipeline guide actions for import, AI assist, export, batch import, and template manager.</li>
+<li>New safety utility module for path validation, filename sanitization, frontmatter stripping, and AI context preparation.</li>
+<li>Expanded integration tests for round-trip assertions, security utility checks, and large markdown durability.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Export pipeline now reuses the first paragraph placeholder to avoid empty first paragraph output.</li>
+<li>Import metadata no longer stores full template base64 by default.</li>
+<li>Full pipeline command semantics were updated from direct import to guided workflow modal.</li>
+<li>Installation script now copies sample files only when <code>--copy-samples</code> is explicitly provided.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+<li>API key defaults to session-only storage and is masked in settings UI.</li>
+<li>AI context controls added: source mode, frontmatter stripping, max length limits, truncation notice.</li>
+<li>Unsafe paths and filename patterns are rejected/sanitized before vault writes.</li>
+<li>API error body exposure is truncated to reduce sensitive payload leakage in notices.</li>
+</ul>
+<h3>Docs</h3>
+<ul>
+<li>README updated for new operations, safety defaults, and recommended settings.</li>
+</ul>
+<h2>[1.0.0] - 2026-02-13</h2>
+<h3>Added</h3>
+<ul>
+<li>Initial release with HWPX import/export pipeline and AI writing integration.</li>
+</ul>
+
+      </article>
+      <div class="action-row">
+        <a class="btn" href="../index.html">메인으로</a>
+        <a class="btn alt" href="../user.html">사용자 페이지</a>
+        <a class="btn alt" href="../developer.html">개발자 페이지</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Built from CHANGELOG.md</span>
+      <span>HWPX Pipeline Documentation</span>
+    </footer>
+  </div>
+</body>
+</html>
