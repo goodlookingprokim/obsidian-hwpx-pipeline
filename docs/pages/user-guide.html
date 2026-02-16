@@ -44,9 +44,16 @@
 <h2>2. 빠른 시작 (3단계)</h2>
 <ol>
 <li><code>Install.md</code>를 따라 플러그인을 설치합니다.</li>
-<li><code>HWPX 파일 임포트 (→ Markdown)</code> 커맨드로 샘플 파일을 가져옵니다.</li>
-<li>편집 후 <code>현재 노트를 HWPX로 내보내기</code>를 실행합니다.</li>
+<li><code>HWPX 3단계 워크플로우 코치 열기</code> 모달을 실행합니다.</li>
+<li>모달의 1단계/2단계/3단계를 순서대로 진행합니다.</li>
 </ol>
+<p>권장 단축키:</p>
+<ul>
+<li>워크플로우 코치: <code>Mod + Shift + H</code></li>
+<li>외부 LLM 프롬프트 키트: <code>Mod + Shift + L</code></li>
+<li>내장 AI 도우미(선택): <code>Mod + Shift + A</code></li>
+<li>템플릿 관리: <code>Mod + Shift + T</code></li>
+</ul>
 <h2>3. 커맨드 사용법</h2>
 <p>커맨드 팔레트(<code>Cmd/Ctrl + P</code>)에서 아래 명령어를 사용합니다.</p>
 <ul>
@@ -54,7 +61,8 @@
 <li><code>여러 HWPX 파일 일괄 임포트</code></li>
 <li><code>현재 노트를 HWPX로 내보내기</code></li>
 <li><code>AI 문서 작성 도우미</code></li>
-<li><code>HWPX 파이프라인 가이드 열기</code></li>
+<li><code>HWPX 3단계 워크플로우 코치 열기</code></li>
+<li><code>HWPX 외부 LLM 프롬프트 키트 열기</code></li>
 <li><code>HWPX 템플릿 관리</code></li>
 </ul>
 <h2>3.1 문서 포털 활용</h2>
@@ -88,7 +96,19 @@
 <ul>
 <li>대량 이관 시 <code>파일 충돌 처리</code>를 <code>새 버전 저장</code>으로 설정</li>
 </ul>
-<h2>4.3 AI 문서 작성</h2>
+<h2>4.3 2단계: 외부 LLM 협업 작성</h2>
+<ol>
+<li><code>HWPX 외부 LLM 프롬프트 키트 열기</code> 실행</li>
+<li>목적에 맞는 프롬프트(구조 유지형/다양화형/점검형) 복사</li>
+<li>Obsidian과 연동된 외부 LLM(또는 별도 LLM 도구)에 붙여넣기</li>
+<li>결과 Markdown을 노트에 반영</li>
+</ol>
+<p>핵심:</p>
+<ul>
+<li>3단계 HWPX 재출력을 위해 제목/표/번호 구조를 유지하세요.</li>
+<li>문장 개선은 가능하지만 표 행/열 개수는 유지하는 것이 안전합니다.</li>
+</ul>
+<h2>4.4 선택 기능: 내장 AI 문서 작성 도우미</h2>
 <ol>
 <li><code>AI 문서 작성 도우미</code> 실행</li>
 <li>프롬프트 입력</li>
@@ -105,7 +125,7 @@
 <ul>
 <li><code>frontmatter 제외</code>와 <code>최대 컨텍스트 길이</code>를 함께 설정해 데이터 전송량을 관리하세요.</li>
 </ul>
-<h2>4.4 HWPX 익스포트</h2>
+<h2>4.5 HWPX 익스포트</h2>
 <ol>
 <li>Markdown 노트를 활성화</li>
 <li><code>현재 노트를 HWPX로 내보내기</code> 실행</li>
@@ -118,7 +138,7 @@
 <li><code>Vault 저장만</code></li>
 <li><code>다운로드만</code></li>
 </ul>
-<h2>4.5 템플릿 관리</h2>
+<h2>4.6 템플릿 관리</h2>
 <ol>
 <li><code>HWPX 템플릿 관리</code> 실행</li>
 <li>템플릿 목록 확인</li>

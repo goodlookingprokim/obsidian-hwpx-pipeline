@@ -176,6 +176,12 @@
 <li><code>최대 컨텍스트 길이: 12000</code></li>
 </ul>
 </li>
+<li>시연 전 단축키 확인:<ul>
+<li><code>Mod + Shift + H</code>: <code>HWPX 3단계 워크플로우 코치 열기</code></li>
+<li><code>Mod + Shift + L</code>: <code>HWPX 외부 LLM 프롬프트 키트 열기</code></li>
+<li><code>Mod + Shift + T</code>: <code>HWPX 템플릿 관리</code></li>
+</ul>
+</li>
 </ol>
 <h3>B3. 리허설/시연 명령어</h3>
 <h4>B3-1. 시연 전 1분 체크 (개별 실행)</h4>
@@ -236,14 +242,15 @@ npm test
 </ol>
 <p>강사 행동:</p>
 <ol>
+<li><code>HWPX 외부 LLM 프롬프트 키트 열기</code> 실행</li>
 <li>문단 일부 선택</li>
-<li><code>AI 문서 작성 도우미</code> 실행</li>
-<li><code>참고 컨텍스트: 선택 텍스트</code> 확인</li>
-<li>프롬프트 입력:<ul>
+<li>프롬프트 템플릿 복사 후 외부 LLM에 입력</li>
+<li>프롬프트 입력 예시:<ul>
 <li>&quot;위 내용을 기준으로 실행 계획 핵심 요약 4문장 작성&quot;</li>
 </ul>
 </li>
-<li>결과 삽입 확인</li>
+<li>결과를 Markdown에 반영</li>
+<li>(선택) <code>AI 문서 작성 도우미</code>로 동일 흐름 재현</li>
 </ol>
 <p>완료 확인 멘트:</p>
 <ol>

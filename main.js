@@ -20566,20 +20566,31 @@ var HwpxPipelinePlugin = class extends import_obsidian2.Plugin {
     this.addCommand({
       id: "ai-write",
       name: "AI \uBB38\uC11C \uC791\uC131 \uB3C4\uC6B0\uBBF8",
+      hotkeys: [{ modifiers: ["Mod", "Shift"], key: "A" }],
       callback: async () => {
         await this.aiAssist();
       }
     });
     this.addCommand({
       id: "full-pipeline",
-      name: "HWPX \uD30C\uC774\uD504\uB77C\uC778 \uAC00\uC774\uB4DC \uC5F4\uAE30",
+      name: "HWPX 3\uB2E8\uACC4 \uC6CC\uD06C\uD50C\uB85C\uC6B0 \uCF54\uCE58 \uC5F4\uAE30",
+      hotkeys: [{ modifiers: ["Mod", "Shift"], key: "H" }],
       callback: async () => {
         new PipelineGuideModal(this.app, this).open();
       }
     });
     this.addCommand({
+      id: "llm-prompt-kit",
+      name: "HWPX \uC678\uBD80 LLM \uD504\uB86C\uD504\uD2B8 \uD0A4\uD2B8 \uC5F4\uAE30",
+      hotkeys: [{ modifiers: ["Mod", "Shift"], key: "L" }],
+      callback: () => {
+        new LlmPromptKitModal(this.app).open();
+      }
+    });
+    this.addCommand({
       id: "manage-templates",
       name: "HWPX \uD15C\uD50C\uB9BF \uAD00\uB9AC",
+      hotkeys: [{ modifiers: ["Mod", "Shift"], key: "T" }],
       callback: async () => {
         new TemplateManagerModal(this.app, this).open();
       }
@@ -21410,6 +21421,49 @@ var OverwriteDecisionModal = class _OverwriteDecisionModal extends import_obsidi
     this.resolveFn(decision);
   }
 };
+var WORKFLOW_PROMPT_TEMPLATES = [
+  {
+    title: "\uD15C\uD50C\uB9BF \uC720\uC9C0\uD615 \uC791\uC131",
+    purpose: "3\uB2E8\uACC4 HWPX \uC7AC\uBCC0\uD658 \uC2DC \uAD6C\uC870/\uD2C0\uC774 \uBB34\uB108\uC9C0\uC9C0 \uC54A\uB3C4\uB85D \uBCF8\uBB38\uB9CC \uAC1C\uC120",
+    prompt: `\uB2E4\uC74C Markdown \uBB38\uC11C\uB294 HWPX \uC591\uC2DD\uC73C\uB85C \uB2E4\uC2DC \uB0B4\uBCF4\uB0BC \uC608\uC815\uC785\uB2C8\uB2E4.
+\uADDC\uCE59:
+1) \uC81C\uBAA9/\uBC88\uD638 \uCCB4\uACC4\uB97C \uC720\uC9C0\uD569\uB2C8\uB2E4.
+2) \uD45C \uAD6C\uC870(\uD589/\uC5F4 \uC218, \uD56D\uBAA9 \uC21C\uC11C)\uB294 \uBCC0\uACBD\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.
+3) \uB0A0\uC9DC/\uC218\uCE58/\uACE0\uC720\uBA85\uC0AC\uB294 \uBCF4\uC874\uD569\uB2C8\uB2E4.
+4) \uBB38\uCCB4\uB9CC \uACF5\uBB38\uC11C \uC2A4\uD0C0\uC77C\uB85C \uAC1C\uC120\uD569\uB2C8\uB2E4.
+
+\uCD9C\uB825 \uD615\uC2DD:
+- \uC218\uC815\uB41C Markdown \uBCF8\uBB38\uB9CC \uCD9C\uB825`
+  },
+  {
+    title: "\uB0B4\uC6A9 \uB2E4\uC591\uD654\uD615 \uC791\uC131",
+    purpose: "\uAC19\uC740 \uD2C0\uC744 \uC720\uC9C0\uD558\uBA74\uC11C \uBB38\uC7A5 \uD45C\uD604\uACFC \uC608\uC2DC\uB97C \uB2E4\uC591\uD654",
+    prompt: `\uC544\uB798 Markdown\uC740 \uB3D9\uC77C \uC591\uC2DD\uC73C\uB85C \uC7AC\uCD9C\uB825\uB429\uB2C8\uB2E4.
+\uC694\uAD6C\uC0AC\uD56D:
+1) \uC139\uC158 \uAD6C\uC870\uC640 \uC81C\uBAA9\uC740 \uC720\uC9C0
+2) \uAC01 \uB2E8\uB77D\uC740 \uC758\uBBF8\uB97C \uC720\uC9C0\uD55C \uCC44 \uD45C\uD604\uB9CC \uB2E4\uC591\uD654
+3) \uAC01 \uC139\uC158\uC5D0 \uC2E0\uADDC \uBB38\uC7A5\uC740 \uCD5C\uB300 2\uBB38\uC7A5 \uCD94\uAC00
+4) \uD45C\uB294 \uCD94\uAC00/\uC0AD\uC81C \uC5C6\uC774 \uD14D\uC2A4\uD2B8\uB9CC \uAC1C\uC120
+
+\uCD9C\uB825 \uD615\uC2DD:
+- \uCD5C\uC885 Markdown`
+  },
+  {
+    title: "\uC775\uC2A4\uD3EC\uD2B8 \uC804 \uC810\uAC80\uD615",
+    purpose: "3\uB2E8\uACC4 \uC9C1\uC804\uC5D0 HWPX \uC7AC\uBCC0\uD658 \uD488\uC9C8\uC744 \uCCB4\uD06C",
+    prompt: `\uB2E4\uC74C Markdown\uC774 HWPX \uC7AC\uBCC0\uD658\uC5D0 \uC801\uD569\uD55C\uC9C0 \uC810\uAC80\uD574\uC918.
+\uCCB4\uD06C \uD56D\uBAA9:
+1) \uC81C\uBAA9 \uACC4\uCE35(H1/H2/H3) \uC77C\uAD00\uC131
+2) \uBAA9\uB85D \uAE30\uD638/\uBC88\uD638 \uCCB4\uACC4 \uC77C\uAD00\uC131
+3) \uD45C \uBB38\uBC95 \uC624\uB958 \uC5EC\uBD80
+4) frontmatter\uC758 hwpx_pipeline.source_file \uC874\uC7AC \uC5EC\uBD80
+
+\uCD9C\uB825 \uD615\uC2DD:
+1) \uBB38\uC81C \uBAA9\uB85D
+2) \uC218\uC815 \uC81C\uC548
+3) \uC218\uC815\uB41C \uCD5C\uC885 Markdown`
+  }
+];
 var PipelineGuideModal = class extends import_obsidian2.Modal {
   constructor(app, plugin) {
     super(app);
@@ -21418,43 +21472,156 @@ var PipelineGuideModal = class extends import_obsidian2.Modal {
   onOpen() {
     const { contentEl } = this;
     contentEl.empty();
-    contentEl.createEl("h2", { text: "HWPX \uD30C\uC774\uD504\uB77C\uC778 \uAC00\uC774\uB4DC" });
-    contentEl.createEl("p", { text: "\uC791\uC5C5 \uB2E8\uACC4\uB97C \uBE60\uB974\uAC8C \uC2E4\uD589\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4." });
-    const ol = contentEl.createEl("ol");
-    ol.createEl("li", { text: "HWPX \uD30C\uC77C \uC784\uD3EC\uD2B8" });
-    ol.createEl("li", { text: "\uD544\uC694 \uC2DC AI \uC791\uC131 \uB3C4\uC6B0\uBBF8\uB85C \uBCF8\uBB38 \uC0DD\uC131/\uBCF4\uC644" });
-    ol.createEl("li", { text: "\uD604\uC7AC \uB178\uD2B8\uB97C HWPX\uB85C \uC775\uC2A4\uD3EC\uD2B8" });
-    const buttonDiv = contentEl.createDiv();
-    buttonDiv.style.display = "flex";
-    buttonDiv.style.gap = "8px";
-    buttonDiv.style.marginTop = "12px";
-    buttonDiv.style.flexWrap = "wrap";
-    const importBtn = buttonDiv.createEl("button", { text: "1. \uC784\uD3EC\uD2B8 \uC2E4\uD589" });
-    importBtn.addEventListener("click", async () => {
-      this.close();
-      await this.plugin.importHwpxFile();
+    contentEl.createEl("h2", { text: "HWPX 3\uB2E8\uACC4 \uC6CC\uD06C\uD50C\uB85C\uC6B0 \uCF54\uCE58" });
+    contentEl.createEl("p", { text: "1\uB2E8\uACC4 \uAE30\uC900 HWPX \uBD88\uB7EC\uC624\uAE30 \u2192 2\uB2E8\uACC4 \uC678\uBD80 LLM \uD3B8\uC9D1 \u2192 3\uB2E8\uACC4 HWPX \uC7AC\uCD9C\uB825 \uD750\uB984\uC744 \uB2E8\uCD95\uD0A4\uC640 \uBAA8\uB2EC\uB85C \uBE60\uB974\uAC8C \uC2E4\uD589\uD569\uB2C8\uB2E4." });
+    const feasibility = contentEl.createDiv();
+    feasibility.style.padding = "8px 10px";
+    feasibility.style.border = "1px solid var(--background-modifier-border)";
+    feasibility.style.borderRadius = "8px";
+    feasibility.style.marginBottom = "12px";
+    feasibility.createEl("strong", { text: "\uC2E4\uD589 \uAC00\uB2A5\uC131 \uCCB4\uD06C: " });
+    feasibility.appendText("\uD604\uC7AC \uD50C\uB7EC\uADF8\uC778\uC740 \uC784\uD3EC\uD2B8/\uC775\uC2A4\uD3EC\uD2B8/\uD15C\uD50C\uB9BF \uAD00\uB9AC\uAC00 \uC774\uBBF8 \uC900\uBE44\uB418\uC5B4 \uC788\uACE0, 2\uB2E8\uACC4\uB294 \uC678\uBD80 LLM \uD504\uB86C\uD504\uD2B8 \uD0A4\uD2B8\uB85C \uBC14\uB85C \uC6B4\uC601\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.");
+    const stepWrap = contentEl.createDiv();
+    stepWrap.style.display = "grid";
+    stepWrap.style.gap = "10px";
+    this.createStepCard(stepWrap, {
+      title: "1\uB2E8\uACC4. \uAE30\uC900 HWPX \uBD88\uB7EC\uC624\uAE30",
+      description: "\uAE30\uC900\uC774 \uB418\uB294 HWPX\uB97C \uAC00\uC838\uC640 Markdown \uC791\uC5C5\uBCF8\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.",
+      bullets: [
+        "\uB2E8\uC77C \uC784\uD3EC\uD2B8 \uB610\uB294 \uC77C\uAD04 \uC784\uD3EC\uD2B8\uB85C \uC2DC\uC791",
+        "source_file \uBA54\uD0C0\uB370\uC774\uD130 \uD655\uC778"
+      ],
+      actions: [
+        {
+          label: "1\uB2E8\uACC4 \uC2E4\uD589: \uC784\uD3EC\uD2B8",
+          onClick: async () => {
+            this.close();
+            await this.plugin.importHwpxFile();
+          }
+        },
+        {
+          label: "\uC77C\uAD04 \uC784\uD3EC\uD2B8",
+          onClick: async () => {
+            this.close();
+            await this.plugin.importMultipleHwpxFiles();
+          }
+        }
+      ]
     });
-    const aiBtn = buttonDiv.createEl("button", { text: "2. AI \uB3C4\uC6B0\uBBF8 \uC5F4\uAE30" });
-    aiBtn.addEventListener("click", async () => {
-      this.close();
-      await this.plugin.aiAssist();
+    this.createStepCard(stepWrap, {
+      title: "2\uB2E8\uACC4. \uC678\uBD80 LLM\uB85C \uB0B4\uC6A9 \uBCF4\uAC15",
+      description: "Obsidian\uACFC \uC5F0\uACB0\uB41C \uBCC4\uB3C4 LLM(\uB610\uB294 \uC678\uBD80 \uCC57\uBD07)\uC73C\uB85C \uBCF8\uBB38\uC744 \uAC1C\uC120\uD569\uB2C8\uB2E4.",
+      bullets: [
+        "\uD2C0 \uC720\uC9C0\uD615/\uB2E4\uC591\uD654\uD615/\uC810\uAC80\uD615 \uD504\uB86C\uD504\uD2B8 \uC81C\uACF5",
+        "3\uB2E8\uACC4 \uC7AC\uBCC0\uD658\uC744 \uC704\uD55C \uAD6C\uC870 \uC720\uC9C0 \uADDC\uCE59 \uD3EC\uD568"
+      ],
+      actions: [
+        {
+          label: "2\uB2E8\uACC4 \uB3C4\uAD6C: \uD504\uB86C\uD504\uD2B8 \uD0A4\uD2B8",
+          onClick: () => {
+            new LlmPromptKitModal(this.app).open();
+          }
+        },
+        {
+          label: "\uC120\uD0DD: \uB0B4\uC7A5 AI \uB3C4\uC6B0\uBBF8",
+          onClick: async () => {
+            this.close();
+            await this.plugin.aiAssist();
+          }
+        }
+      ]
     });
-    const exportBtn = buttonDiv.createEl("button", { text: "3. \uC775\uC2A4\uD3EC\uD2B8 \uC2E4\uD589" });
-    exportBtn.addEventListener("click", async () => {
-      this.close();
-      await this.plugin.exportCurrentNote();
+    this.createStepCard(stepWrap, {
+      title: "3\uB2E8\uACC4. HWPX \uC7AC\uCD9C\uB825",
+      description: "\uC644\uC131\uB41C Markdown\uC744 \uAE30\uC900 \uC591\uC2DD \uB610\uB294 \uC6D0\uD558\uB294 \uD15C\uD50C\uB9BF\uC73C\uB85C HWPX \uCD9C\uB825\uD569\uB2C8\uB2E4.",
+      bullets: [
+        "\uC775\uC2A4\uD3EC\uD2B8 \uBBF8\uB9AC\uBCF4\uAE30\uB85C \uD488\uC9C8 \uD655\uC778",
+        "\uD15C\uD50C\uB9BF \uC5F0\uACB0/\uAD50\uCCB4 \uD6C4 \uB3D9\uC77C \uD750\uB984 \uC7AC\uC0AC\uC6A9"
+      ],
+      actions: [
+        {
+          label: "3\uB2E8\uACC4 \uC2E4\uD589: HWPX \uC775\uC2A4\uD3EC\uD2B8",
+          onClick: async () => {
+            this.close();
+            await this.plugin.exportCurrentNote();
+          }
+        },
+        {
+          label: "\uD15C\uD50C\uB9BF \uAD00\uB9AC",
+          onClick: () => {
+            this.close();
+            new TemplateManagerModal(this.app, this.plugin).open();
+          }
+        }
+      ]
     });
-    const batchBtn = buttonDiv.createEl("button", { text: "\uC77C\uAD04 \uC784\uD3EC\uD2B8" });
-    batchBtn.addEventListener("click", async () => {
-      this.close();
-      await this.plugin.importMultipleHwpxFiles();
-    });
-    const templateBtn = buttonDiv.createEl("button", { text: "\uD15C\uD50C\uB9BF \uAD00\uB9AC" });
-    templateBtn.addEventListener("click", () => {
-      this.close();
-      new TemplateManagerModal(this.app, this.plugin).open();
-    });
-    const closeBtn = buttonDiv.createEl("button", { text: "\uB2EB\uAE30" });
+    contentEl.createEl("h3", { text: "\uAD8C\uC7A5 \uB2E8\uCD95\uD0A4" });
+    const shortcutList = contentEl.createEl("ul");
+    shortcutList.createEl("li", { text: "3\uB2E8\uACC4 \uC6CC\uD06C\uD50C\uB85C\uC6B0 \uCF54\uCE58: Mod + Shift + H" });
+    shortcutList.createEl("li", { text: "\uC678\uBD80 LLM \uD504\uB86C\uD504\uD2B8 \uD0A4\uD2B8: Mod + Shift + L" });
+    shortcutList.createEl("li", { text: "\uB0B4\uC7A5 AI \uB3C4\uC6B0\uBBF8(\uC120\uD0DD): Mod + Shift + A" });
+    shortcutList.createEl("li", { text: "\uD15C\uD50C\uB9BF \uAD00\uB9AC: Mod + Shift + T" });
+    const closeBtn = contentEl.createEl("button", { text: "\uB2EB\uAE30" });
+    closeBtn.style.marginTop = "12px";
+    closeBtn.addEventListener("click", () => this.close());
+  }
+  onClose() {
+    this.contentEl.empty();
+  }
+  createStepCard(container, payload) {
+    const card = container.createDiv();
+    card.style.border = "1px solid var(--background-modifier-border)";
+    card.style.borderRadius = "8px";
+    card.style.padding = "10px";
+    card.createEl("h3", { text: payload.title });
+    card.createEl("p", { text: payload.description });
+    const ul = card.createEl("ul");
+    for (const bullet of payload.bullets) {
+      ul.createEl("li", { text: bullet });
+    }
+    const actions = card.createDiv();
+    actions.style.display = "flex";
+    actions.style.gap = "8px";
+    actions.style.flexWrap = "wrap";
+    for (const action of payload.actions) {
+      const button = actions.createEl("button", { text: action.label });
+      button.addEventListener("click", () => {
+        void action.onClick();
+      });
+    }
+  }
+};
+var LlmPromptKitModal = class extends import_obsidian2.Modal {
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.createEl("h2", { text: "\uC678\uBD80 LLM \uD504\uB86C\uD504\uD2B8 \uD0A4\uD2B8" });
+    contentEl.createEl("p", { text: "2\uB2E8\uACC4\uC5D0\uC11C \uC678\uBD80 LLM\uC5D0 \uBD99\uC5EC\uB123\uC5B4 \uC0AC\uC6A9\uD558\uC138\uC694. 3\uB2E8\uACC4 HWPX \uC7AC\uCD9C\uB825\uC744 \uACE0\uB824\uD55C \uADDC\uCE59\uC774 \uD3EC\uD568\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4." });
+    for (const template of WORKFLOW_PROMPT_TEMPLATES) {
+      const card = contentEl.createDiv();
+      card.style.border = "1px solid var(--background-modifier-border)";
+      card.style.borderRadius = "8px";
+      card.style.padding = "10px";
+      card.style.marginBottom = "10px";
+      card.createEl("h3", { text: template.title });
+      card.createEl("p", { text: template.purpose });
+      const area = card.createEl("textarea");
+      area.value = template.prompt;
+      area.readOnly = true;
+      area.style.width = "100%";
+      area.style.minHeight = "160px";
+      area.style.resize = "vertical";
+      const row = card.createDiv();
+      row.style.display = "flex";
+      row.style.justifyContent = "flex-end";
+      row.style.marginTop = "8px";
+      const copyBtn = row.createEl("button", { text: "\uD504\uB86C\uD504\uD2B8 \uBCF5\uC0AC" });
+      copyBtn.addEventListener("click", async () => {
+        const ok = await copyTextToClipboard(template.prompt);
+        new import_obsidian2.Notice(ok ? "\uD504\uB86C\uD504\uD2B8\uB97C \uBCF5\uC0AC\uD588\uC2B5\uB2C8\uB2E4." : "\uBCF5\uC0AC\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4. \uC218\uB3D9\uC73C\uB85C \uBCF5\uC0AC\uD574\uC8FC\uC138\uC694.");
+      });
+    }
+    const closeBtn = contentEl.createEl("button", { text: "\uB2EB\uAE30" });
     closeBtn.addEventListener("click", () => this.close());
   }
   onClose() {
@@ -21573,10 +21740,10 @@ var HwpxPipelineSettingTab = class extends import_obsidian2.PluginSettingTab {
     help.style.borderRadius = "8px";
     help.style.background = "var(--background-secondary)";
     const steps = [
-      "1. HWPX \uD30C\uC77C \uC784\uD3EC\uD2B8: \uB9AC\uBCF8 \uC544\uC774\uCF58 \uB610\uB294 \uCEE4\uB9E8\uB4DC \uD314\uB808\uD2B8\uC5D0\uC11C \uC2E4\uD589",
-      "2. \uD544\uC694 \uC2DC AI \uB3C4\uC6B0\uBBF8\uB85C \uBCF8\uBB38 \uC0DD\uC131/\uBCF4\uC644",
-      "3. \uD604\uC7AC \uB178\uD2B8\uB97C HWPX\uB85C \uC775\uC2A4\uD3EC\uD2B8",
-      "4. \uD30C\uC77C \uCDA9\uB3CC \uC815\uCC45\uACFC \uCEE8\uD14D\uC2A4\uD2B8 \uC804\uC1A1 \uC815\uCC45\uC744 \uBA3C\uC800 \uC810\uAC80"
+      "1. \uAE30\uC900 HWPX\uB97C \uC784\uD3EC\uD2B8\uD574 Markdown \uC791\uC5C5\uBCF8 \uC0DD\uC131",
+      "2. \uC678\uBD80 LLM(\uB610\uB294 \uC120\uD0DD\uC801\uC73C\uB85C \uB0B4\uC7A5 AI)\uB85C \uBCF8\uBB38 \uBCF4\uAC15",
+      "3. \uD15C\uD50C\uB9BF \uC5F0\uACB0 \uC0C1\uD0DC\uB97C \uD655\uC778\uD55C \uB4A4 HWPX\uB85C \uC775\uC2A4\uD3EC\uD2B8",
+      "4. \uC6CC\uD06C\uD50C\uB85C\uC6B0 \uCF54\uCE58 \uB2E8\uCD95\uD0A4: Mod+Shift+H"
     ];
     for (const step of steps) {
       help.createEl("p", { text: step });
@@ -21642,6 +21809,15 @@ ${merged}
 ---
 ${body.startsWith("\n") ? body : `
 ${body}`}`;
+}
+async function copyTextToClipboard(text) {
+  try {
+    if (!navigator?.clipboard?.writeText) return false;
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
 }
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));

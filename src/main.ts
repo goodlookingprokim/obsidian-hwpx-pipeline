@@ -111,6 +111,7 @@ export default class HwpxPipelinePlugin extends Plugin {
         this.addCommand({
             id: 'ai-write',
             name: 'AI 문서 작성 도우미',
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'A' }],
             callback: async () => {
                 await this.aiAssist();
             },
@@ -118,15 +119,26 @@ export default class HwpxPipelinePlugin extends Plugin {
 
         this.addCommand({
             id: 'full-pipeline',
-            name: 'HWPX 파이프라인 가이드 열기',
+            name: 'HWPX 3단계 워크플로우 코치 열기',
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'H' }],
             callback: async () => {
                 new PipelineGuideModal(this.app, this).open();
             },
         });
 
         this.addCommand({
+            id: 'llm-prompt-kit',
+            name: 'HWPX 외부 LLM 프롬프트 키트 열기',
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'L' }],
+            callback: () => {
+                new LlmPromptKitModal(this.app).open();
+            },
+        });
+
+        this.addCommand({
             id: 'manage-templates',
             name: 'HWPX 템플릿 관리',
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'T' }],
             callback: async () => {
                 new TemplateManagerModal(this.app, this).open();
             },
@@ -1145,6 +1157,56 @@ class OverwriteDecisionModal extends Modal {
     }
 }
 
+interface PromptTemplateItem {
+    title: string;
+    purpose: string;
+    prompt: string;
+}
+
+const WORKFLOW_PROMPT_TEMPLATES: PromptTemplateItem[] = [
+    {
+        title: '템플릿 유지형 작성',
+        purpose: '3단계 HWPX 재변환 시 구조/틀이 무너지지 않도록 본문만 개선',
+        prompt: `다음 Markdown 문서는 HWPX 양식으로 다시 내보낼 예정입니다.
+규칙:
+1) 제목/번호 체계를 유지합니다.
+2) 표 구조(행/열 수, 항목 순서)는 변경하지 않습니다.
+3) 날짜/수치/고유명사는 보존합니다.
+4) 문체만 공문서 스타일로 개선합니다.
+
+출력 형식:
+- 수정된 Markdown 본문만 출력`,
+    },
+    {
+        title: '내용 다양화형 작성',
+        purpose: '같은 틀을 유지하면서 문장 표현과 예시를 다양화',
+        prompt: `아래 Markdown은 동일 양식으로 재출력됩니다.
+요구사항:
+1) 섹션 구조와 제목은 유지
+2) 각 단락은 의미를 유지한 채 표현만 다양화
+3) 각 섹션에 신규 문장은 최대 2문장 추가
+4) 표는 추가/삭제 없이 텍스트만 개선
+
+출력 형식:
+- 최종 Markdown`,
+    },
+    {
+        title: '익스포트 전 점검형',
+        purpose: '3단계 직전에 HWPX 재변환 품질을 체크',
+        prompt: `다음 Markdown이 HWPX 재변환에 적합한지 점검해줘.
+체크 항목:
+1) 제목 계층(H1/H2/H3) 일관성
+2) 목록 기호/번호 체계 일관성
+3) 표 문법 오류 여부
+4) frontmatter의 hwpx_pipeline.source_file 존재 여부
+
+출력 형식:
+1) 문제 목록
+2) 수정 제안
+3) 수정된 최종 Markdown`,
+    },
+];
+
 class PipelineGuideModal extends Modal {
     private readonly plugin: HwpxPipelinePlugin;
 
@@ -1157,51 +1219,182 @@ class PipelineGuideModal extends Modal {
         const { contentEl } = this;
         contentEl.empty();
 
-        contentEl.createEl('h2', { text: 'HWPX 파이프라인 가이드' });
-        contentEl.createEl('p', { text: '작업 단계를 빠르게 실행할 수 있습니다.' });
+        contentEl.createEl('h2', { text: 'HWPX 3단계 워크플로우 코치' });
+        contentEl.createEl('p', { text: '1단계 기준 HWPX 불러오기 → 2단계 외부 LLM 편집 → 3단계 HWPX 재출력 흐름을 단축키와 모달로 빠르게 실행합니다.' });
 
-        const ol = contentEl.createEl('ol');
-        ol.createEl('li', { text: 'HWPX 파일 임포트' });
-        ol.createEl('li', { text: '필요 시 AI 작성 도우미로 본문 생성/보완' });
-        ol.createEl('li', { text: '현재 노트를 HWPX로 익스포트' });
+        const feasibility = contentEl.createDiv();
+        feasibility.style.padding = '8px 10px';
+        feasibility.style.border = '1px solid var(--background-modifier-border)';
+        feasibility.style.borderRadius = '8px';
+        feasibility.style.marginBottom = '12px';
+        feasibility.createEl('strong', { text: '실행 가능성 체크: ' });
+        feasibility.appendText('현재 플러그인은 임포트/익스포트/템플릿 관리가 이미 준비되어 있고, 2단계는 외부 LLM 프롬프트 키트로 바로 운영할 수 있습니다.');
 
-        const buttonDiv = contentEl.createDiv();
-        buttonDiv.style.display = 'flex';
-        buttonDiv.style.gap = '8px';
-        buttonDiv.style.marginTop = '12px';
-        buttonDiv.style.flexWrap = 'wrap';
+        const stepWrap = contentEl.createDiv();
+        stepWrap.style.display = 'grid';
+        stepWrap.style.gap = '10px';
 
-        const importBtn = buttonDiv.createEl('button', { text: '1. 임포트 실행' });
-        importBtn.addEventListener('click', async () => {
-            this.close();
-            await this.plugin.importHwpxFile();
+        this.createStepCard(stepWrap, {
+            title: '1단계. 기준 HWPX 불러오기',
+            description: '기준이 되는 HWPX를 가져와 Markdown 작업본을 만듭니다.',
+            bullets: [
+                '단일 임포트 또는 일괄 임포트로 시작',
+                'source_file 메타데이터 확인',
+            ],
+            actions: [
+                {
+                    label: '1단계 실행: 임포트',
+                    onClick: async () => {
+                        this.close();
+                        await this.plugin.importHwpxFile();
+                    },
+                },
+                {
+                    label: '일괄 임포트',
+                    onClick: async () => {
+                        this.close();
+                        await this.plugin.importMultipleHwpxFiles();
+                    },
+                },
+            ],
         });
 
-        const aiBtn = buttonDiv.createEl('button', { text: '2. AI 도우미 열기' });
-        aiBtn.addEventListener('click', async () => {
-            this.close();
-            await this.plugin.aiAssist();
+        this.createStepCard(stepWrap, {
+            title: '2단계. 외부 LLM로 내용 보강',
+            description: 'Obsidian과 연결된 별도 LLM(또는 외부 챗봇)으로 본문을 개선합니다.',
+            bullets: [
+                '틀 유지형/다양화형/점검형 프롬프트 제공',
+                '3단계 재변환을 위한 구조 유지 규칙 포함',
+            ],
+            actions: [
+                {
+                    label: '2단계 도구: 프롬프트 키트',
+                    onClick: () => {
+                        new LlmPromptKitModal(this.app).open();
+                    },
+                },
+                {
+                    label: '선택: 내장 AI 도우미',
+                    onClick: async () => {
+                        this.close();
+                        await this.plugin.aiAssist();
+                    },
+                },
+            ],
         });
 
-        const exportBtn = buttonDiv.createEl('button', { text: '3. 익스포트 실행' });
-        exportBtn.addEventListener('click', async () => {
-            this.close();
-            await this.plugin.exportCurrentNote();
+        this.createStepCard(stepWrap, {
+            title: '3단계. HWPX 재출력',
+            description: '완성된 Markdown을 기준 양식 또는 원하는 템플릿으로 HWPX 출력합니다.',
+            bullets: [
+                '익스포트 미리보기로 품질 확인',
+                '템플릿 연결/교체 후 동일 흐름 재사용',
+            ],
+            actions: [
+                {
+                    label: '3단계 실행: HWPX 익스포트',
+                    onClick: async () => {
+                        this.close();
+                        await this.plugin.exportCurrentNote();
+                    },
+                },
+                {
+                    label: '템플릿 관리',
+                    onClick: () => {
+                        this.close();
+                        new TemplateManagerModal(this.app, this.plugin).open();
+                    },
+                },
+            ],
         });
 
-        const batchBtn = buttonDiv.createEl('button', { text: '일괄 임포트' });
-        batchBtn.addEventListener('click', async () => {
-            this.close();
-            await this.plugin.importMultipleHwpxFiles();
-        });
+        contentEl.createEl('h3', { text: '권장 단축키' });
+        const shortcutList = contentEl.createEl('ul');
+        shortcutList.createEl('li', { text: '3단계 워크플로우 코치: Mod + Shift + H' });
+        shortcutList.createEl('li', { text: '외부 LLM 프롬프트 키트: Mod + Shift + L' });
+        shortcutList.createEl('li', { text: '내장 AI 도우미(선택): Mod + Shift + A' });
+        shortcutList.createEl('li', { text: '템플릿 관리: Mod + Shift + T' });
 
-        const templateBtn = buttonDiv.createEl('button', { text: '템플릿 관리' });
-        templateBtn.addEventListener('click', () => {
-            this.close();
-            new TemplateManagerModal(this.app, this.plugin).open();
-        });
+        const closeBtn = contentEl.createEl('button', { text: '닫기' });
+        closeBtn.style.marginTop = '12px';
+        closeBtn.addEventListener('click', () => this.close());
+    }
 
-        const closeBtn = buttonDiv.createEl('button', { text: '닫기' });
+    onClose() {
+        this.contentEl.empty();
+    }
+
+    private createStepCard(container: HTMLElement, payload: {
+        title: string;
+        description: string;
+        bullets: string[];
+        actions: Array<{ label: string; onClick: () => void | Promise<void> }>;
+    }) {
+        const card = container.createDiv();
+        card.style.border = '1px solid var(--background-modifier-border)';
+        card.style.borderRadius = '8px';
+        card.style.padding = '10px';
+
+        card.createEl('h3', { text: payload.title });
+        card.createEl('p', { text: payload.description });
+
+        const ul = card.createEl('ul');
+        for (const bullet of payload.bullets) {
+            ul.createEl('li', { text: bullet });
+        }
+
+        const actions = card.createDiv();
+        actions.style.display = 'flex';
+        actions.style.gap = '8px';
+        actions.style.flexWrap = 'wrap';
+
+        for (const action of payload.actions) {
+            const button = actions.createEl('button', { text: action.label });
+            button.addEventListener('click', () => {
+                void action.onClick();
+            });
+        }
+    }
+}
+
+class LlmPromptKitModal extends Modal {
+    onOpen() {
+        const { contentEl } = this;
+        contentEl.empty();
+
+        contentEl.createEl('h2', { text: '외부 LLM 프롬프트 키트' });
+        contentEl.createEl('p', { text: '2단계에서 외부 LLM에 붙여넣어 사용하세요. 3단계 HWPX 재출력을 고려한 규칙이 포함되어 있습니다.' });
+
+        for (const template of WORKFLOW_PROMPT_TEMPLATES) {
+            const card = contentEl.createDiv();
+            card.style.border = '1px solid var(--background-modifier-border)';
+            card.style.borderRadius = '8px';
+            card.style.padding = '10px';
+            card.style.marginBottom = '10px';
+
+            card.createEl('h3', { text: template.title });
+            card.createEl('p', { text: template.purpose });
+
+            const area = card.createEl('textarea');
+            area.value = template.prompt;
+            area.readOnly = true;
+            area.style.width = '100%';
+            area.style.minHeight = '160px';
+            area.style.resize = 'vertical';
+
+            const row = card.createDiv();
+            row.style.display = 'flex';
+            row.style.justifyContent = 'flex-end';
+            row.style.marginTop = '8px';
+
+            const copyBtn = row.createEl('button', { text: '프롬프트 복사' });
+            copyBtn.addEventListener('click', async () => {
+                const ok = await copyTextToClipboard(template.prompt);
+                new Notice(ok ? '프롬프트를 복사했습니다.' : '복사에 실패했습니다. 수동으로 복사해주세요.');
+            });
+        }
+
+        const closeBtn = contentEl.createEl('button', { text: '닫기' });
         closeBtn.addEventListener('click', () => this.close());
     }
 
@@ -1423,10 +1616,10 @@ class HwpxPipelineSettingTab extends PluginSettingTab {
         help.style.background = 'var(--background-secondary)';
 
         const steps = [
-            '1. HWPX 파일 임포트: 리본 아이콘 또는 커맨드 팔레트에서 실행',
-            '2. 필요 시 AI 도우미로 본문 생성/보완',
-            '3. 현재 노트를 HWPX로 익스포트',
-            '4. 파일 충돌 정책과 컨텍스트 전송 정책을 먼저 점검',
+            '1. 기준 HWPX를 임포트해 Markdown 작업본 생성',
+            '2. 외부 LLM(또는 선택적으로 내장 AI)로 본문 보강',
+            '3. 템플릿 연결 상태를 확인한 뒤 HWPX로 익스포트',
+            '4. 워크플로우 코치 단축키: Mod+Shift+H',
         ];
 
         for (const step of steps) {
@@ -1480,6 +1673,16 @@ function upsertTemplateSourceFile(content: string, sourceFile: string): string {
 
     const merged = `${frontmatter}\nhwpx_pipeline:\n  source_file: ${escapedSource}`;
     return `---\n${merged}\n---\n${body.startsWith('\n') ? body : `\n${body}`}`;
+}
+
+async function copyTextToClipboard(text: string): Promise<boolean> {
+    try {
+        if (!navigator?.clipboard?.writeText) return false;
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 function clamp(value: number, min: number, max: number): number {

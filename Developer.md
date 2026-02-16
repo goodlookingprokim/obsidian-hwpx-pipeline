@@ -35,6 +35,18 @@ npx tsc --noEmit
 - `docs/assets/app.js`: 테마, 내비게이션, 복사 버튼 동작
 - `docs/assets/styles.css`: 랜딩/문서 페이지 UI 스타일
 
+## 3.1 사용자 워크플로우 기본 전략
+플러그인은 다음 분리 전략을 기본으로 지원합니다.
+1. 1단계: HWPX 임포트/Markdown 변환
+2. 2단계: 외부 LLM(또는 선택적으로 내장 AI)로 본문 작업
+3. 3단계: HWPX 익스포트
+
+기본 단축키:
+- 워크플로우 코치: `Mod + Shift + H`
+- 외부 LLM 프롬프트 키트: `Mod + Shift + L`
+- 내장 AI 도우미(선택): `Mod + Shift + A`
+- 템플릿 관리: `Mod + Shift + T`
+
 ## 4. 핵심 설계 원칙
 1. 사용자 데이터는 기본적으로 Vault 내 로컬 처리
 2. 외부 전송(AI)은 최소화/선택 가능해야 함
