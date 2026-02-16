@@ -96,7 +96,7 @@
     };
   }
 
-  async function copySnippet(button, text) {
+  async function copyText(button, text) {
     try {
       await navigator.clipboard.writeText(text);
       button.textContent = '복사 완료';
@@ -109,6 +109,17 @@
         button.textContent = '복사';
       }, 1400);
     }
+  }
+
+  function isLikelyInlineCopyTarget(value) {
+    const text = value.trim();
+    if (text.length < 4 || text.length > 180) return false;
+    if (/^https?:\/\//i.test(text)) return true;
+    if (text.includes('→')) return true;
+    if (/^\/|^[A-Za-z]:\\/.test(text)) return true;
+    if (/plugins?|settings?|vault|release|beta/i.test(text)) return true;
+    if (text.includes('/') || text.includes('-')) return true;
+    return false;
   }
 
   function enhanceCodeSnippets() {
@@ -142,7 +153,7 @@
       copyButton.textContent = '복사';
       copyButton.setAttribute('aria-label', '코드 스니펫 복사');
       copyButton.addEventListener('click', function () {
-        copySnippet(copyButton, rawText);
+        copyText(copyButton, rawText);
       });
 
       bar.appendChild(badge);
@@ -158,11 +169,76 @@
     });
   }
 
+  function enhanceUrlCopyTargets() {
+    const links = document.querySelectorAll('.url-link');
+    links.forEach(function (link) {
+      if (link.dataset.copyEnhanced === 'true') return;
+      link.dataset.copyEnhanced = 'true';
+
+      const wrapper = document.createElement('span');
+      wrapper.className = 'url-copy-row';
+      const parent = link.parentElement;
+      if (!parent) return;
+
+      parent.insertBefore(wrapper, link);
+      wrapper.appendChild(link);
+
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'url-copy-btn';
+      copyButton.textContent = '복사';
+      copyButton.setAttribute('aria-label', 'URL 복사');
+      copyButton.addEventListener('click', function () {
+        const value = (link.getAttribute('href') || link.textContent || '').trim();
+        copyText(copyButton, value);
+      });
+
+      wrapper.appendChild(copyButton);
+    });
+  }
+
+  function enhanceInlineCopyTargets() {
+    const nodes = document.querySelectorAll('.doc-content code');
+    nodes.forEach(function (codeNode) {
+      if (!(codeNode instanceof HTMLElement)) return;
+      if (codeNode.closest('pre')) return;
+      if (codeNode.dataset.copyEnhanced === 'true') return;
+
+      const text = (codeNode.textContent || '').trim();
+      if (!isLikelyInlineCopyTarget(text)) return;
+
+      codeNode.dataset.copyEnhanced = 'true';
+      const wrapper = document.createElement('span');
+      wrapper.className = 'inline-copy';
+      if (/^https?:\/\//i.test(text)) {
+        wrapper.classList.add('is-url');
+      }
+      const parent = codeNode.parentElement;
+      if (!parent) return;
+
+      parent.insertBefore(wrapper, codeNode);
+      wrapper.appendChild(codeNode);
+
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'inline-copy-btn';
+      copyButton.textContent = '복사';
+      copyButton.setAttribute('aria-label', '인라인 텍스트 복사');
+      copyButton.addEventListener('click', function () {
+        copyText(copyButton, text);
+      });
+
+      wrapper.appendChild(copyButton);
+    });
+  }
+
   function init() {
     applyTheme(preferredTheme());
     bindThemeToggle();
     highlightNav();
     enhanceCodeSnippets();
+    enhanceInlineCopyTargets();
+    enhanceUrlCopyTargets();
   }
 
   if (document.readyState === 'loading') {

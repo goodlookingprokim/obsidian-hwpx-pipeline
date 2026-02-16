@@ -517,6 +517,38 @@ body::before {
   padding: 0.08rem 0.26rem;
 }
 
+.inline-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.inline-copy code {
+  display: inline-block;
+  max-width: min(100%, 48rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.inline-copy-btn {
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.22rem 0.4rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.inline-copy.is-url {
+  max-width: 100%;
+}
+
 .doc-content pre code {
   background: transparent;
   padding: 0;
@@ -591,6 +623,29 @@ body::before {
   background: var(--accent-sub);
 }
 
+.url-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.url-copy-row .url-link {
+  flex: 1 1 auto;
+}
+
+.url-copy-btn {
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.24rem 0.5rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--shadow);
+  white-space: nowrap;
+}
+
 @media (max-width: 980px) {
   .col-6,
   .col-4,
@@ -641,6 +696,11 @@ body::before {
 
   .snippet-copy {
     margin-left: 0;
+  }
+
+  .url-copy-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
