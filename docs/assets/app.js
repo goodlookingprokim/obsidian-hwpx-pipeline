@@ -111,15 +111,9 @@
     }
   }
 
-  function isLikelyInlineCopyTarget(value) {
+  function isHttpsInlineCopyTarget(value) {
     const text = value.trim();
-    if (text.length < 4 || text.length > 180) return false;
-    if (/^https?:\/\//i.test(text)) return true;
-    if (text.includes('→')) return true;
-    if (/^\/|^[A-Za-z]:\\/.test(text)) return true;
-    if (/plugins?|settings?|vault|release|beta/i.test(text)) return true;
-    if (text.includes('/') || text.includes('-')) return true;
-    return false;
+    return /^https:\/\//i.test(text);
   }
 
   function enhanceCodeSnippets() {
@@ -205,14 +199,12 @@
       if (codeNode.dataset.copyEnhanced === 'true') return;
 
       const text = (codeNode.textContent || '').trim();
-      if (!isLikelyInlineCopyTarget(text)) return;
+      if (!isHttpsInlineCopyTarget(text)) return;
 
       codeNode.dataset.copyEnhanced = 'true';
       const wrapper = document.createElement('span');
       wrapper.className = 'inline-copy';
-      if (/^https?:\/\//i.test(text)) {
-        wrapper.classList.add('is-url');
-      }
+      wrapper.classList.add('is-url');
       const parent = codeNode.parentElement;
       if (!parent) return;
 
