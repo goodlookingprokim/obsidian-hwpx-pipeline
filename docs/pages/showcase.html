@@ -31,210 +31,152 @@
       <p class="kicker">강의 시연 진행안과 데모 시나리오</p>
       <article class="doc-content">
         <h1>Showcase.md</h1>
-<h2>문서 목적</h2>
-<p>이 문서는 강의/세미나에서 <code>HWPX Pipeline</code> 플러그인을 시연하기 위한 상세 진행안입니다.</p>
-<ul>
-<li>대상: 교사, 공공기관 실무자, 문서 자동화 관심 개발자</li>
-<li>권장 시연 시간: 25~40분</li>
-<li>핵심 메시지:</li>
-</ul>
+<h2>한 줄 포지셔닝</h2>
+<p><code>HWPX Pipeline</code>은 <strong>기존 HWPX 양식을 버리지 않고</strong>, <strong>Markdown + AI 생산성</strong>을 즉시 붙이는 실무형 플러그인입니다.</p>
+<div class="grid">
+  <article class="card primary col-4">
+    <h3>양식 보존</h3>
+    <p>HWPX를 가져오고 다시 내보낼 때 템플릿 기반으로 형식을 유지합니다.</p>
+    <p class="meta">Import + Template Export</p>
+  </article>
+  <article class="card col-4">
+    <h3>작업 속도</h3>
+    <p>임포트 → AI 보강 → 익스포트를 하나의 흐름으로 시연할 수 있습니다.</p>
+    <p class="meta">Fast Demo Loop</p>
+  </article>
+  <article class="card col-4">
+    <h3>운영 안정성</h3>
+    <p>충돌 정책, 미리보기, 경로 검증으로 실무 리스크를 제어합니다.</p>
+    <p class="meta">Safe by Default</p>
+  </article>
+</div>
+
+<div class="sticker-row">
+  <span class="sticker a">쉽다</span>
+  <span class="sticker b">빠르다</span>
+  <span class="sticker c">실무형</span>
+</div>
+
+<h2>1. 60초 오프닝 스크립트</h2>
+<p>발표 시작 1분은 아래 문장 그대로 읽으면 됩니다.</p>
 <ol>
-<li>HWPX와 Markdown을 오가며 문서 생산성을 높일 수 있다.</li>
-<li>AI를 안전하게 붙여도 문서 통제권을 유지할 수 있다.</li>
-<li>실무 운영에 필요한 충돌 처리, 템플릿 관리, 문제 대응까지 준비되어 있다.</li>
+<li>&quot;우리는 HWPX를 버리지 않습니다. 그대로 살립니다.&quot;</li>
+<li>&quot;문서 작성은 Markdown으로 가볍게, 필요할 때 AI로 보강합니다.&quot;</li>
+<li>&quot;마지막 출력은 다시 HWPX로. 익숙한 양식 그대로 배포할 수 있습니다.&quot;</li>
+<li>&quot;오늘 시연은 복잡한 설정이 아니라, 바로 실무에 쓰는 흐름만 보여드리겠습니다.&quot;</li>
 </ol>
-<h2>1. 시연 전 준비</h2>
-<h3>1.1 환경 체크리스트</h3>
+<h2>2. 12분 임팩트 데모 시나리오</h2>
+<table>
+<thead>
+<tr>
+<th>시간</th>
+<th>시연 액션</th>
+<th>관객이 즉시 체감하는 강점</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0~2분</td>
+<td>문제 정의 + 오프닝</td>
+<td>&quot;기존 양식 유지 + 자동화&quot; 메시지 고정</td>
+</tr>
+<tr>
+<td>2~5분</td>
+<td>단일 HWPX 임포트</td>
+<td>원본 문서가 Markdown으로 즉시 열림</td>
+</tr>
+<tr>
+<td>5~8분</td>
+<td>AI 문단 보강</td>
+<td>선택 텍스트만 전송하는 안전한 AI 사용</td>
+</tr>
+<tr>
+<td>8~10분</td>
+<td>템플릿 연결/관리</td>
+<td>문서-양식 연결을 사람이 이해 가능하게 관리</td>
+</tr>
+<tr>
+<td>10~12분</td>
+<td>HWPX 익스포트</td>
+<td>최종 결과가 실무 포맷으로 즉시 복귀</td>
+</tr>
+</tbody></table>
+<h3>2.1 시연 전 1분 체크 (개별 실행)</h3>
+<pre><code class="language-bash">git clone https://github.com/goodlookingprokim/obsidian-hwpx-pipeline.git
+cd obsidian-hwpx-pipeline
+npm install
+npm run build
+</code></pre>
+<h3>2.2 리허설 품질 체크 (동시 실행 가능)</h3>
+<pre><code class="language-bash">npm run build
+npm test
+</code></pre>
+<h2>3. 강점이 살아나는 시연 포인트</h2>
+<h3>포인트 A: &quot;원본을 버리지 않는 자동화&quot;</h3>
 <ul>
-<li>Obsidian 최신 버전 (Desktop)</li>
-<li>플러그인 설치 완료 (<code>Install.md</code> 참고)</li>
-<li>샘플 파일 준비:</li>
+<li>임포트 직후 <code>hwpx_pipeline</code> 메타데이터를 보여줍니다.</li>
+<li>템플릿 폴더(<code>_hwpx_templates</code>)에 원본이 저장되는 것을 보여줍니다.</li>
 </ul>
+<h3>포인트 B: &quot;AI는 강력하지만 통제 가능&quot;</h3>
+<ul>
+<li><code>참고 컨텍스트: 선택 텍스트</code></li>
+<li><code>frontmatter 제외: ON</code></li>
+<li><code>최대 컨텍스트 길이</code>를 짧게 설정해 민감 데이터 최소 전송을 강조합니다.</li>
+</ul>
+<h3>포인트 C: &quot;운영에서 진짜 편한 도구&quot;</h3>
+<ul>
+<li>충돌 정책(<code>ask/version/skip/overwrite</code>)을 짧게 보여줍니다.</li>
+<li>미리보기 모달에서 실수 방지 UX를 강조합니다.</li>
+</ul>
+<h2>4. 관객 유형별 한 줄 멘트</h2>
+<table>
+<thead>
+<tr>
+<th>대상</th>
+<th>한 줄 멘트</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>교사/강사</td>
+<td>&quot;한글 양식은 유지하고, 내용 작성 속도만 올릴 수 있습니다.&quot;</td>
+</tr>
+<tr>
+<td>공공/행정 실무자</td>
+<td>&quot;양식 준수와 보고서 생산성을 동시에 가져갈 수 있습니다.&quot;</td>
+</tr>
+<tr>
+<td>개발자/운영자</td>
+<td>&quot;보안 기본값과 테스트 가능한 파이프라인이 준비되어 있습니다.&quot;</td>
+</tr>
+</tbody></table>
+<h2>5. URL 복사/이동 시연 (현장 반응 좋은 구간)</h2>
+<ul>
+<li>BRAT 입력 URL: <code>https://github.com/goodlookingprokim/obsidian-hwpx-pipeline</code></li>
+<li>문서 포털: <code>https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/</code></li>
+<li>Showcase 페이지: <code>https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/pages/showcase.html</code></li>
+</ul>
+<p>설명:</p>
+<ul>
+<li>위 항목은 <code>https://</code>로 시작하므로 문서에서 인라인 <code>복사</code> 버튼이 표시됩니다.</li>
+<li>Source Links는 이동과 복사를 동시에 지원합니다.</li>
+</ul>
+<h2>6. 장애가 생겨도 시연을 살리는 백업 플랜</h2>
 <ol>
-<li><code>samples/교실환경개선_추진계획.hwpx</code></li>
-<li>추가 시연용 HWPX 파일 2~3개 (일괄 임포트용)</li>
+<li>AI 네트워크 장애: AI 구간을 건너뛰고 임포트/익스포트/템플릿 관리로 전환</li>
+<li>충돌 반복: <code>파일 충돌 처리</code>를 <code>새 버전 저장</code>으로 변경해 즉시 진행</li>
+<li>템플릿 오연결: <code>HWPX 템플릿 관리</code>에서 <code>현재 노트 연결</code>로 즉시 복구</li>
 </ol>
-<ul>
-<li>네트워크 확인 (AI 시연 시 필요)</li>
-<li>AI API 키 설정 (세션 저장 권장)</li>
-</ul>
-<h3>1.2 시연용 권장 설정</h3>
-<p><code>설정 → HWPX Pipeline</code></p>
-<ul>
-<li><code>파일 충돌 처리</code>: <code>매번 물어보기</code></li>
-<li><code>임포트 미리보기</code>: <code>ON</code></li>
-<li><code>익스포트 미리보기</code>: <code>ON</code></li>
-<li><code>익스포트 결과 전달</code>: <code>Vault 저장 + 다운로드</code></li>
-<li><code>기본 컨텍스트</code>: <code>선택 텍스트</code></li>
-<li><code>frontmatter 제외</code>: <code>ON</code></li>
-<li><code>최대 컨텍스트 길이</code>: <code>12000</code></li>
-</ul>
-<h3>1.3 발표자 멘트 준비</h3>
-<ul>
-<li>도입 멘트 예시:<ul>
-<li>&quot;오늘은 HWPX 원본 양식을 버리지 않고 Markdown 기반 협업/자동화를 붙이는 방법을 보여드리겠습니다.&quot;</li>
-</ul>
-</li>
-<li>전환 멘트 예시:<ul>
-<li>&quot;이제 문서 변환이 아니라 운영 단계에서 필요한 안전장치를 보겠습니다.&quot;</li>
-</ul>
-</li>
-</ul>
-<h3>1.4 문서 포털 시연 포인트 (선택)</h3>
-<ul>
-<li>포털 주소: <code>https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/</code></li>
-<li>코드 블록 상단 실행 라벨(<code>개별 실행</code>/<code>동시 실행 가능</code>)을 먼저 보여줍니다.</li>
-<li>코드 블록 <code>복사</code> 버튼과 URL 인라인(<code>https://...</code>) <code>복사</code> 버튼을 각각 1회 시연합니다.</li>
-<li>Source Links 영역에서 GitHub 원본으로 이동 가능한 점을 보여줍니다.</li>
-</ul>
-<h2>2. 시연 시나리오 (권장 30분)</h2>
-<h2>2.1 0~3분: 문제 정의</h2>
-<ul>
-<li>현재 실무 문제 제시:</li>
-</ul>
+<h2>7. 마무리 30초 클로징</h2>
 <ol>
-<li>HWPX 원본 양식 유지가 어렵다.</li>
-<li>AI 사용 시 민감정보 노출이 불안하다.</li>
-<li>파일 충돌/버전 관리가 번거롭다.</li>
+<li>&quot;양식은 그대로, 작성 속도는 더 빠르게.&quot;</li>
+<li>&quot;AI는 선택적으로, 하지만 안전하게.&quot;</li>
+<li>&quot;시연용이 아니라 바로 실무 투입 가능한 구조입니다.&quot;</li>
 </ol>
-<ul>
-<li>해결 방향 제시: <code>임포트 → 편집/AI → 익스포트</code> 파이프라인</li>
-</ul>
-<h2>2.2 3~10분: 단일 HWPX 임포트</h2>
-<ul>
-<li>실행:</li>
-</ul>
+<h2>8. 후속 행동 유도</h2>
 <ol>
-<li>커맨드 팔레트에서 <code>HWPX 파일 임포트 (→ Markdown)</code> 실행</li>
-<li><code>교실환경개선_추진계획.hwpx</code> 선택</li>
-<li>임포트 미리보기 확인 후 저장</li>
-</ol>
-<ul>
-<li>강조 포인트:</li>
-</ul>
-<ol>
-<li>제목/본문/표가 Markdown으로 변환됨</li>
-<li>frontmatter에 출처 정보(<code>hwpx_pipeline</code>)가 남아 추적 가능</li>
-<li>템플릿 폴더(<code>_hwpx_templates</code>)에 원본 저장됨</li>
-</ol>
-<h2>2.3 10~17분: AI 문서 작성 도우미</h2>
-<ul>
-<li>실행:</li>
-</ul>
-<ol>
-<li>기존 문서에서 일부 문단 선택</li>
-<li><code>AI 문서 작성 도우미</code> 실행</li>
-<li><code>참고 컨텍스트: 선택 텍스트</code> 확인</li>
-<li>프롬프트 입력 후 생성</li>
-</ol>
-<ul>
-<li>예시 프롬프트:<ul>
-<li>&quot;위 내용을 기준으로 예산 집행 근거를 공문서 톤으로 5문장 추가해줘&quot;</li>
-</ul>
-</li>
-<li>강조 포인트:</li>
-</ul>
-<ol>
-<li>선택 텍스트만 전송 가능</li>
-<li>frontmatter 제외/길이 제한 정책으로 데이터 최소 전송</li>
-<li>생성 결과를 현재 커서에 삽입</li>
-</ol>
-<h2>2.4 17~23분: 템플릿 관리 + 연결</h2>
-<ul>
-<li>실행:</li>
-</ul>
-<ol>
-<li><code>HWPX 템플릿 관리</code> 커맨드 실행</li>
-<li>템플릿 목록 확인</li>
-<li>현재 노트를 특정 템플릿에 연결 (<code>현재 노트 연결</code>)</li>
-</ol>
-<ul>
-<li>강조 포인트:</li>
-</ul>
-<ol>
-<li>템플릿 교체/삭제/재연결 가능</li>
-<li>노트와 원본 양식의 연결이 문서 내에서 관리됨</li>
-</ol>
-<h2>2.5 23~28분: HWPX 익스포트</h2>
-<ul>
-<li>실행:</li>
-</ul>
-<ol>
-<li><code>현재 노트를 HWPX로 내보내기</code> 실행</li>
-<li>익스포트 미리보기 확인</li>
-<li><code>Vault 저장 + 다운로드</code> 결과 확인</li>
-</ol>
-<ul>
-<li>강조 포인트:</li>
-</ul>
-<ol>
-<li>템플릿 기반 재출력으로 형식 보존</li>
-<li>동일 파일명 충돌 시 정책대로 처리됨</li>
-</ol>
-<h2>2.6 28~30분: 일괄 임포트</h2>
-<ul>
-<li>실행:</li>
-</ul>
-<ol>
-<li><code>여러 HWPX 파일 일괄 임포트</code> 실행</li>
-<li>2~3개 파일 선택</li>
-<li>결과 Notice 확인 (성공/건너뜀/실패 건수)</li>
-</ol>
-<ul>
-<li>강조 포인트:</li>
-</ul>
-<ol>
-<li>실무 초기 전환 시 대량 처리 유리</li>
-<li>충돌 정책과 함께 운영 안정성 확보</li>
-</ol>
-<h2>3. 시연 중 질문 유도 포인트</h2>
-<ul>
-<li>&quot;민감한 문서는 AI에 어디까지 보내야 안전할까요?&quot;</li>
-<li>&quot;기존 HWPX 양식을 바꿔야 하나요, 그대로 써도 되나요?&quot;</li>
-<li>&quot;여러 명이 동시에 편집할 때 충돌은 어떻게 처리하나요?&quot;</li>
-</ul>
-<h2>4. 장애 대비 플랜</h2>
-<h3>4.1 인터넷 불가 (AI 시연 실패)</h3>
-<ul>
-<li>대체 진행:</li>
-</ul>
-<ol>
-<li>AI 섹션은 설정/보안 옵션 설명 위주로 전환</li>
-<li>임포트/익스포트/템플릿 관리 중심으로 시연 지속</li>
-</ol>
-<h3>4.2 파일 충돌 반복 발생</h3>
-<ul>
-<li>대체 진행:</li>
-</ul>
-<ol>
-<li><code>파일 충돌 처리</code>를 <code>새 버전 저장</code>으로 변경</li>
-<li>충돌 관리 UX 시연 포인트로 전환</li>
-</ol>
-<h3>4.3 잘못된 템플릿 연결</h3>
-<ul>
-<li>대체 진행:</li>
-</ul>
-<ol>
-<li>템플릿 관리 모달에서 즉시 재연결</li>
-<li><code>source_file</code> 업데이트 동작 설명</li>
-</ol>
-<h2>5. 강의 마무리 체크</h2>
-<ul>
-<li>데모 종료 후 강조할 실무 적용 순서:</li>
-</ul>
-<ol>
-<li>설치 (<code>Install.md</code>)</li>
-<li>사용자 교육 (<code>UserGuide.md</code>)</li>
-<li>운영 정책 확정 (충돌/AI 전송/템플릿 폴더)</li>
-<li>내부 배포/개발 확장 (<code>Project.md</code>, <code>Developer.md</code>)</li>
-</ol>
-<ul>
-<li>참고 문서:</li>
-</ul>
-<ol>
-<li><code>UserGuide.md</code></li>
-<li><code>TroubleShooting.md</code></li>
-<li><code>Developer.md</code></li>
+<li>설치 가이드: <code>Install.md</code></li>
+<li>사용자 운영: <code>UserGuide.md</code></li>
+<li>장애 대응: <code>TroubleShooting.md</code></li>
+<li>확장 개발: <code>Developer.md</code>, <code>Project.md</code></li>
 </ol>
 
       </article>
