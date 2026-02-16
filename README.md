@@ -53,3 +53,7 @@ node create-sample-hwpx.mjs
 # E2E + 라운드트립 assert + 보안/내구성 케이스
 node test-pipeline.mjs
 ```
+
+## 참고 및 감사
+- HWPX 처리 로직 구성 시 [`ubermensch1218/hwpx-ts`](https://github.com/ubermensch1218/hwpx-ts)를 참고했습니다.
+- `hwpx-ts`와 `@ubermensch1218/hwpxcore`를 공개해주신 개발자 `@ubermensch1218`님께 감사드립니다.
