@@ -1,0 +1,23 @@
+{
+  "name": "obsidian-hwpx-pipeline",
+  "version": "1.1.0",
+  "description": "HWPX ↔ Markdown 양방향 변환 + AI 협업 옵시디언 플러그인",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "test": "node test-pipeline.mjs"
+  },
+  "keywords": ["obsidian", "hwpx", "hancom", "markdown", "converter"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "esbuild": "^0.21.0",
+    "obsidian": "latest",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@ubermensch1218/hwpxcore": "^0.1.2"
+  }
+}

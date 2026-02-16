@@ -1,0 +1,9 @@
+{
+    "id": "hwpx-pipeline",
+    "name": "HWPX Pipeline",
+    "version": "1.1.0",
+    "minAppVersion": "1.0.0",
+    "description": "HWPX ↔ Markdown 양방향 변환 및 AI 협업 문서 작성 플러그인",
+    "author": "HWPX Pipeline",
+    "isDesktopOnly": true
+}
