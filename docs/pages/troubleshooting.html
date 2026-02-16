@@ -250,6 +250,21 @@
 <li>브라우저에서 device code 인증</li>
 <li>완료 후 <code>gh auth status</code> 재확인</li>
 </ol>
+<h3>8.4 문서 포털에서 복사 버튼이 예상과 다름</h3>
+<p>증상:</p>
+<ul>
+<li>코드 블록 밖 인라인 텍스트에 복사 버튼이 안 보임</li>
+</ul>
+<p>원인:</p>
+<ul>
+<li>정책상 인라인 복사 버튼은 <code>https://</code>로 시작하는 값에만 표시됨</li>
+</ul>
+<p>해결:</p>
+<ol>
+<li>URL 값이 <code>https://</code>로 시작하는지 확인</li>
+<li>코드 블록 복사가 필요하면 값 자체를 코드 블록으로 배치</li>
+<li>문서 하단 Source Links 영역의 URL 복사 버튼 사용</li>
+</ol>
 <h2>9. 운영 노하우</h2>
 <h3>9.1 충돌 최소화</h3>
 <ul>

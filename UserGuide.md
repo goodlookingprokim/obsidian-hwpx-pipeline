@@ -25,6 +25,13 @@
 - `HWPX 파이프라인 가이드 열기`
 - `HWPX 템플릿 관리`
 
+## 3.1 문서 포털 활용
+- 문서 포털 메인: `https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/`
+- 코드 블록 상단에 실행 유형 라벨이 표시됩니다.
+- 코드 블록은 모두 복사 버튼을 제공합니다.
+- 인라인 값 복사 버튼은 `https://`로 시작하는 값에만 표시됩니다.
+- 문서 하단 Source Links는 링크 이동과 URL 복사를 함께 지원합니다.
+
 ## 4. 주요 작업 흐름
 
 ## 4.1 HWPX 임포트

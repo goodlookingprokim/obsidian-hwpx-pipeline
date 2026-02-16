@@ -31,6 +31,9 @@ npx tsc --noEmit
 - `src/ai-connector.ts`: OpenAI/Anthropic API 통신
 - `src/safety.ts`: 경로/입력 검증 및 메타데이터 처리
 - `test-pipeline.mjs`: 통합/보안/내구성 테스트
+- `scripts/build-doc-pages.mjs`: Markdown -> `docs/pages/*.html` 생성
+- `docs/assets/app.js`: 테마, 내비게이션, 복사 버튼 동작
+- `docs/assets/styles.css`: 랜딩/문서 페이지 UI 스타일
 
 ## 4. 핵심 설계 원칙
 1. 사용자 데이터는 기본적으로 Vault 내 로컬 처리
@@ -133,7 +136,14 @@ gh release create vX.Y.Z main.js manifest.json versions.json \
 - 실패 로그를 수집할 때는 문서 본문/키를 절대 남기지 않기
 - 외부 라이브러리 업데이트 시 샘플 round-trip 재검증 필수
 
-## 12. 관련 문서
+## 12. 문서 포털 구현 규칙
+- HTML 생성 전 반드시 Markdown 원본(`*.md`)을 먼저 수정합니다.
+- 코드 블록 복사 버튼은 모든 블록에 적용합니다.
+- 인라인 복사 버튼은 `https://` 시작값만 허용합니다.
+- 실행 유형 라벨(`개별 실행`, `동시 실행 가능`) 분류 기준 변경 시 `docs/assets/app.js`와 관련 문서를 같이 갱신합니다.
+- 문서 변경 후 `npm run build:docs`로 정적 HTML을 재생성합니다.
+
+## 13. 관련 문서
 - `Project.md`
 - `UserGuide.md`
 - `Install.md`

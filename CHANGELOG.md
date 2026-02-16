@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Docs portal copy behavior now limits inline copy buttons to `https://` values only.
+
+### Docs
+- Updated documentation set (`README`, `Install`, `UserGuide`, `Developer`, `Showcase`, `Project`, `TroubleShooting`, `DocumentationPlan`) to reflect:
+  - snippet execution labels (`개별 실행`, `동시 실행 가능`)
+  - copy-button behavior
+  - GitHub Pages doc portal usage
+
 ## [1.1.0] - 2026-02-16
 
 ### Added

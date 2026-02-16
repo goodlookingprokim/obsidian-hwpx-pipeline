@@ -52,6 +52,7 @@ cp main.js manifest.json "<VAULT_PATH>/.obsidian/plugins/hwpx-pipeline/"
 1. BRAT 설정에서 `Add Beta plugin`
 2. 저장소 URL 입력:
    - `https://github.com/goodlookingprokim/obsidian-hwpx-pipeline`
+   - 문서 포털에서는 위 URL에 `복사` 버튼이 표시됩니다.
 3. 설치 후 플러그인 활성화
 
 ## 4.3 장점
@@ -116,3 +117,8 @@ rm -rf "<VAULT_PATH>/.obsidian/plugins/hwpx-pipeline"
 - Obsidian 재시작 여부
 - 파일 권한 문제
 - 상세 오류는 `TroubleShooting.md` 참고
+
+## 11. 문서 포털 복사 버튼 안내
+- 코드 블록은 항상 `복사` 버튼이 제공됩니다.
+- 코드 블록 외 인라인 값은 `https://`로 시작하는 항목만 `복사` 버튼이 표시됩니다.
+- Source Links 영역의 GitHub URL은 이동/복사를 모두 지원합니다.

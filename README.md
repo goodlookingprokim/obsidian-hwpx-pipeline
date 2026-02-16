@@ -63,6 +63,19 @@ node test-pipeline.mjs
 - 설치 가이드: `Install.md`
 - 문서 작성 계획: `DocumentationPlan.md`
 
+## 문서 포털 (GitHub Pages)
+- 메인: `https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/`
+- 사용자 허브: `https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/user.html`
+- 개발자 허브: `https://goodlookingprokim.github.io/obsidian-hwpx-pipeline/developer.html`
+
+### 포털 사용 팁
+1. 코드 블록에는 실행 유형 라벨이 표시됩니다.
+- `개별 실행`: 순서대로 실행
+- `동시 실행 가능`: 줄 단위 병렬 실행 가능
+2. 코드 블록은 모두 `복사` 버튼을 제공합니다.
+3. 코드 블록 밖 인라인 값은 `https://`로 시작하는 항목에만 `복사` 버튼이 표시됩니다.
+4. 문서 하단의 Source Links는 이동 링크와 복사 버튼을 함께 제공합니다.
+
 ## 참고 및 감사
 - HWPX 처리 로직 구성 시 [`ubermensch1218/hwpx-ts`](https://github.com/ubermensch1218/hwpx-ts)를 참고했습니다.
 - `hwpx-ts`와 `@ubermensch1218/hwpxcore`를 공개해주신 개발자 `@ubermensch1218`님께 감사드립니다.

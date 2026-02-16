@@ -58,6 +58,9 @@ npx tsc --noEmit
 <li><code>src/ai-connector.ts</code>: OpenAI/Anthropic API 통신</li>
 <li><code>src/safety.ts</code>: 경로/입력 검증 및 메타데이터 처리</li>
 <li><code>test-pipeline.mjs</code>: 통합/보안/내구성 테스트</li>
+<li><code>scripts/build-doc-pages.mjs</code>: Markdown -&gt; <code>docs/pages/*.html</code> 생성</li>
+<li><code>docs/assets/app.js</code>: 테마, 내비게이션, 복사 버튼 동작</li>
+<li><code>docs/assets/styles.css</code>: 랜딩/문서 페이지 UI 스타일</li>
 </ul>
 <h2>4. 핵심 설계 원칙</h2>
 <ol>
@@ -169,7 +172,15 @@ npx tsc --noEmit
 <li>실패 로그를 수집할 때는 문서 본문/키를 절대 남기지 않기</li>
 <li>외부 라이브러리 업데이트 시 샘플 round-trip 재검증 필수</li>
 </ul>
-<h2>12. 관련 문서</h2>
+<h2>12. 문서 포털 구현 규칙</h2>
+<ul>
+<li>HTML 생성 전 반드시 Markdown 원본(<code>*.md</code>)을 먼저 수정합니다.</li>
+<li>코드 블록 복사 버튼은 모든 블록에 적용합니다.</li>
+<li>인라인 복사 버튼은 <code>https://</code> 시작값만 허용합니다.</li>
+<li>실행 유형 라벨(<code>개별 실행</code>, <code>동시 실행 가능</code>) 분류 기준 변경 시 <code>docs/assets/app.js</code>와 관련 문서를 같이 갱신합니다.</li>
+<li>문서 변경 후 <code>npm run build:docs</code>로 정적 HTML을 재생성합니다.</li>
+</ul>
+<h2>13. 관련 문서</h2>
 <ul>
 <li><code>Project.md</code></li>
 <li><code>UserGuide.md</code></li>
