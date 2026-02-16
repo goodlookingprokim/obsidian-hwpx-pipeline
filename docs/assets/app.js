@@ -42,10 +42,127 @@
     });
   }
 
+  function classifyExecutionType(text) {
+    const lines = text
+      .split('\n')
+      .map(function (line) {
+        return line.trim();
+      })
+      .filter(function (line) {
+        return line.length > 0 && !line.startsWith('#');
+      });
+
+    if (lines.length <= 1) {
+      return {
+        type: 'single',
+        label: '개별 실행',
+        hint: '명령 1개를 실행합니다.',
+      };
+    }
+
+    const hasShellOperators = lines.some(function (line) {
+      return /&&|\|\||\|/.test(line);
+    });
+
+    const needsSequence = lines.some(function (line) {
+      return (
+        line.startsWith('cd ') ||
+        line.startsWith('git clone ') ||
+        line.startsWith('npm install') ||
+        line.startsWith('pnpm install') ||
+        line.startsWith('yarn install') ||
+        line.startsWith('bun install') ||
+        line.startsWith('mkdir ') ||
+        line.startsWith('cp ') ||
+        line.startsWith('mv ') ||
+        line.startsWith('rm ') ||
+        line.startsWith('./install.sh') ||
+        line.startsWith('gh release create ')
+      );
+    });
+
+    if (!hasShellOperators && !needsSequence) {
+      return {
+        type: 'parallel',
+        label: '동시 실행 가능',
+        hint: '줄 단위로 별도 터미널에서 실행할 수 있습니다.',
+      };
+    }
+
+    return {
+      type: 'single',
+      label: '개별 실행',
+      hint: '위에서 아래 순서로 실행합니다.',
+    };
+  }
+
+  async function copySnippet(button, text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = '복사 완료';
+      setTimeout(function () {
+        button.textContent = '복사';
+      }, 1400);
+    } catch (error) {
+      button.textContent = '복사 실패';
+      setTimeout(function () {
+        button.textContent = '복사';
+      }, 1400);
+    }
+  }
+
+  function enhanceCodeSnippets() {
+    const nodes = document.querySelectorAll('.doc-content pre > code');
+    nodes.forEach(function (codeNode) {
+      const pre = codeNode.parentElement;
+      if (!pre || pre.dataset.enhanced === 'true') return;
+
+      pre.dataset.enhanced = 'true';
+
+      const rawText = codeNode.textContent || '';
+      const execution = classifyExecutionType(rawText);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'snippet';
+      wrapper.dataset.execution = execution.type;
+
+      const bar = document.createElement('div');
+      bar.className = 'snippet-bar';
+
+      const badge = document.createElement('span');
+      badge.className = 'snippet-badge';
+      badge.textContent = execution.label;
+
+      const hint = document.createElement('span');
+      hint.className = 'snippet-hint';
+      hint.textContent = execution.hint;
+
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'snippet-copy';
+      copyButton.textContent = '복사';
+      copyButton.setAttribute('aria-label', '코드 스니펫 복사');
+      copyButton.addEventListener('click', function () {
+        copySnippet(copyButton, rawText);
+      });
+
+      bar.appendChild(badge);
+      bar.appendChild(hint);
+      bar.appendChild(copyButton);
+
+      const parent = pre.parentElement;
+      if (!parent) return;
+
+      parent.insertBefore(wrapper, pre);
+      wrapper.appendChild(bar);
+      wrapper.appendChild(pre);
+    });
+  }
+
   function init() {
     applyTheme(preferredTheme());
     bindThemeToggle();
     highlightNav();
+    enhanceCodeSnippets();
   }
 
   if (document.readyState === 'loading') {
