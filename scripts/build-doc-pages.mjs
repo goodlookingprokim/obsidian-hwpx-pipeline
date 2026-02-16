@@ -4,6 +4,7 @@ import { marked } from 'marked';
 
 const repoRoot = process.cwd();
 const pagesDir = path.join(repoRoot, 'docs', 'pages');
+const REPO_URL = 'https://github.com/goodlookingprokim/obsidian-hwpx-pipeline';
 
 const docs = [
   {
@@ -91,6 +92,10 @@ for (const item of docs) {
 console.log(`Generated ${docs.length} pages in docs/pages`);
 
 function renderDocPage(meta, htmlBody) {
+  const sourceUrl = `${REPO_URL}/blob/main/${encodePathForUrl(meta.src)}`;
+  const generatedPageUrl = `${REPO_URL}/blob/main/docs/pages/${encodePathForUrl(meta.out)}`;
+  const scriptUrl = `${REPO_URL}/blob/main/scripts/build-doc-pages.mjs`;
+
   return `<!doctype html>
 <html lang="ko">
 <head>
@@ -125,6 +130,15 @@ function renderDocPage(meta, htmlBody) {
       <article class="doc-content">
         ${htmlBody}
       </article>
+      <div class="source-box">
+        <p class="kicker">SOURCE LINKS</p>
+        <div class="url-list">
+          <a class="url-link" href="${escapeHtml(REPO_URL)}" target="_blank" rel="noreferrer">${escapeHtml(REPO_URL)}</a>
+          <a class="url-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noreferrer">${escapeHtml(sourceUrl)}</a>
+          <a class="url-link" href="${escapeHtml(generatedPageUrl)}" target="_blank" rel="noreferrer">${escapeHtml(generatedPageUrl)}</a>
+          <a class="url-link" href="${escapeHtml(scriptUrl)}" target="_blank" rel="noreferrer">${escapeHtml(scriptUrl)}</a>
+        </div>
+      </div>
       <div class="action-row">
         <a class="btn" href="../index.html">메인으로</a>
         <a class="btn alt" href="../user.html">사용자 페이지</a>
@@ -161,4 +175,8 @@ function escapeHtml(value) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
+
+function encodePathForUrl(filePath) {
+  return filePath.split('/').map((segment) => encodeURIComponent(segment)).join('/');
 }
